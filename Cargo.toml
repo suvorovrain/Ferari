@@ -9,5 +9,6 @@ repository = "https://github.com/suvorovrain/Ferari"
 readme = "README.md"
 
 [dependencies]
+minifb = "0.28"
 
 [dev-dependencies]
