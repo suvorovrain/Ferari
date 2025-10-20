@@ -24,7 +24,7 @@ fn main() {
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         for i in buffer.iter_mut() {
-            *i = 99999999; // write something more funny here!
+            *i = 89797999; // write something more funny here!
         }
 
         // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
