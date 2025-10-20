@@ -1,0 +1,15 @@
+{
+  "frames": {
+    "test_tile_0_0": {
+      "x": 1,
+      "y": 2,
+      "w": 15,
+      "h": 15
+    }
+  },
+  "meta": {
+    "image": "atlas.png",
+    "tile_size": 16,
+    "version": 1
+  }
+}
