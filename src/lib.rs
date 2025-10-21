@@ -1,3 +1,8 @@
+pub mod assets {
+    pub mod atlas;
+    pub mod gamemap;
+}
+
 /// Just a function returning 5
 ///
 /// # Examples

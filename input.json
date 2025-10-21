@@ -1,0 +1,26 @@
+{
+  "mobs": {
+    "mob_1": {
+      "x_start": 1,
+      "y_start": 2,
+      "asset": "mob_1"
+    }
+  },
+  "objects": {
+    "obj_1": {
+      "x": 1,
+      "y": 2,
+      "asset": "obj_1"
+    }
+  },
+  "tiles": {
+    "tile_1": {
+      "x": 1,
+      "y": 2,
+      "asset": "tile_1"
+    }
+  },
+  "meta": {
+    "name": "map_name"
+  }
+}
