@@ -12,10 +12,18 @@ const HEIGHT: usize = 1000;
 
 
 fn main() {
+    // some shit
     let result = get_five();
     println!("Function returned: {}", result);
+    
+    // read atlas
+
+    // read user game
+    
+    // init buffers
     let mut buffer: Vec<u32> = vec![0; LOGIC_WIDTH * LOGIC_HEIGHT];
 
+    //init window
     let mut window = Window::new(
         "Ferari - smooth color cycle",
         WIDTH,
@@ -24,14 +32,26 @@ fn main() {
     )
     .unwrap_or_else(|e| panic!("{}", e));
 
-    let mut t: f32 = 0.0;
+    // init Input
 
+    // init Draw
+    
+    // init Time
+    let mut time = time::Time::new();
+
+    // init Camera
+    
+    // init Initiator
+
+    // init Render
+
+    // init State
     while window.is_open() && !window.is_key_down(Key::Escape) {
-        t += 0.01;
+        time.update();
 
-        let r = ((t).sin() * 127.0 + 128.0) as u32;
-        let g = ((t + 2.0).sin() * 127.0 + 128.0) as u32;
-        let b = ((t + 4.0).sin() * 127.0 + 128.0) as u32;
+        let r = ((time.total).sin() * 127.0 + 128.0) as u32;
+        let g = ((time.total + 2.0).sin() * 127.0 + 128.0) as u32;
+        let b = ((time.total + 4.0).sin() * 127.0 + 128.0) as u32;
 
         let color = (r << 16) | (g << 8) | b;
 
