@@ -1,26 +1,60 @@
 {
-  "mobs": {
-    "mob_1": {
-      "x_start": 1,
-      "y_start": 2,
-      "asset": "knight_0_0"
-    }
+  "meta": {
+    "name": "demo_map",
+    "tile_size": 16,
+    "size": [4, 4]
   },
+
+  "tiles": {
+    "tile_1": { "x": 0, "y": 0, "asset": "dirt_tile_big_0_0" },
+    "tile_2": { "x": 1, "y": 0, "asset": "dirt_tile_big_0_0" },
+    "tile_3": { "x": 2, "y": 0, "asset": "dirt_tile_big_0_0" },
+    "tile_4": { "x": 3, "y": 0, "asset": "dirt_tile_big_0_0" },
+
+    "tile_5": { "x": 0, "y": 1, "asset": "dirt_tile_big_0_0" },
+    "tile_6": { "x": 1, "y": 1, "asset": "dirt_tile_big_0_0" },
+    "tile_7": { "x": 2, "y": 1, "asset": "dirt_tile_big_0_0" },
+    "tile_8": { "x": 3, "y": 1, "asset": "dirt_tile_big_0_0" },
+
+    "tile_9":  { "x": 0, "y": 2, "asset": "dirt_tile_big_0_0" },
+    "tile_10": { "x": 1, "y": 2, "asset": "dirt_tile_big_0_0" },
+    "tile_11": { "x": 2, "y": 2, "asset": "dirt_tile_big_0_0" },
+    "tile_12": { "x": 3, "y": 2, "asset": "dirt_tile_big_0_0" },
+
+    "tile_13": { "x": 0, "y": 3, "asset": "dirt_tile_big_0_0" },
+    "tile_14": { "x": 1, "y": 3, "asset": "dirt_tile_big_0_0" },
+    "tile_15": { "x": 2, "y": 3, "asset": "dirt_tile_big_0_0" },
+    "tile_16": { "x": 3, "y": 3, "asset": "dirt_tile_big_0_0" }
+  },
+
   "objects": {
     "obj_1": {
-      "x": 1,
-      "y": 2,
+      "x": 2,
+      "y": 1,
       "asset": "cactus_long_3_9"
     }
   },
-  "tiles": {
-    "tile_1": {
-      "x": 1,
-      "y": 2,
-      "asset": "dirt_tile_big_0_0"
+
+  "mobs": {
+    "player": {
+      "x_start": 0,
+      "y_start": 0,
+      "asset": "knight_0_0",
+      "is_player": true,
+      "behaviour": {
+        "type": "controlled"
+      }
+    },
+    "mob_1": {
+      "x_start": 3,
+      "y_start": 3,
+      "asset": "imp_20_0",
+      "is_player": false,
+      "behaviour": {
+        "type": "walker",
+        "direction": "left",
+        "speed": 12
+      }
     }
-  },
-  "meta": {
-    "name": "map_name"
   }
 }
