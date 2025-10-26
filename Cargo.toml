@@ -13,5 +13,6 @@ minifb = "0.28"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 image = "0.25"
+crossbeam-channel = "0.5.15"
 
 [dev-dependencies]
