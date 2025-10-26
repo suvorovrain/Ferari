@@ -3,21 +3,21 @@
     "mob_1": {
       "x_start": 1,
       "y_start": 2,
-      "asset": "mob_1"
+      "asset": "knight_0_0"
     }
   },
   "objects": {
     "obj_1": {
       "x": 1,
       "y": 2,
-      "asset": "obj_1"
+      "asset": "cactus_long_3_9"
     }
   },
   "tiles": {
     "tile_1": {
       "x": 1,
       "y": 2,
-      "asset": "tile_1"
+      "asset": "dirt_tile_big_0_0"
     }
   },
   "meta": {

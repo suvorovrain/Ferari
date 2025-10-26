@@ -1,0 +1,15 @@
+{
+  "frames": {
+    "knight_0_0": {
+      "x": 4,
+      "y": 14,
+      "w": 10,
+      "h": 10
+    }
+  },
+  "meta": {
+    "image": "atlas.png",
+    "tile_size": 16,
+    "version": 1
+  }
+}
