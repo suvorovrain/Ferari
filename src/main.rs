@@ -1,6 +1,7 @@
 use ferari::get_five;
 use minifb::{Key, Window, WindowOptions};
 mod draw;
+mod input;
 mod time;
 
 const LOGIC_WIDTH: usize = 200;
@@ -9,38 +10,32 @@ const LOGIC_HEIGHT: usize = 200;
 const WIDTH: usize = 1000;
 const HEIGHT: usize = 1000;
 
-
-
 fn main() {
     // some shit
     let result = get_five();
     println!("Function returned: {}", result);
-    
+
     // read atlas
 
     // read user game
-    
+
     // init buffers
     let mut buffer: Vec<u32> = vec![0; LOGIC_WIDTH * LOGIC_HEIGHT];
 
     //init window
-    let mut window = Window::new(
-        "Ferari - smooth color cycle",
-        WIDTH,
-        HEIGHT,
-        WindowOptions::default(),
-    )
-    .unwrap_or_else(|e| panic!("{}", e));
+    let mut window =
+        Window::new("Ferari - smooth color cycle", WIDTH, HEIGHT, WindowOptions::default())
+            .unwrap_or_else(|e| panic!("{}", e));
 
     // init Input
 
     // init Draw
-    
+
     // init Time
     let mut time = time::Time::new();
 
     // init Camera
-    
+
     // init Initiator
 
     // init Render
