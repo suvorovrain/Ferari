@@ -115,8 +115,8 @@ impl Atlas {
 
     println!("Loaded {} frames from image: {}", atlas.frame_count(), "atlas.png");
 
-    if let Some(frame) = atlas.get_frame("test_tile_0_0") {
-        println!("Frame 'test_tile_0_0': {:?}", frame);
+    if let Some(frame) = atlas.get_frame("dirt_tile_big_0_0") {
+        println!("Frame 'dirt_tile_big_0_0': {:?}", frame);
         println!("Position: ({}, {})", frame.x, frame.y);
         println!("Size: {}x{}", frame.w, frame.h);
     }
@@ -137,7 +137,7 @@ mod tests {
         let json_data = r#"
         {
           "frames": {
-            "test_tile_0_0": {
+            "dirt_tile_big_0_0": {
               "x": 1,
               "y": 2,
               "w": 15,
@@ -163,7 +163,7 @@ mod tests {
         assert_eq!(atlas_json.meta.tile_size, 16);
         assert_eq!(atlas_json.meta.version, 1);
 
-        let frame = &atlas_json.frames["test_tile_0_0"];
+        let frame = &atlas_json.frames["dirt_tile_big_0_0"];
         assert_eq!(frame.x, 1);
         assert_eq!(frame.y, 2);
         assert_eq!(frame.w, 15);
