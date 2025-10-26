@@ -28,6 +28,7 @@ fn main() {
             .unwrap_or_else(|e| panic!("{}", e));
 
     // init Input
+    let mut input = input::Input::new();
 
     // init Draw
 
@@ -43,6 +44,8 @@ fn main() {
     // init State
     while window.is_open() && !window.is_key_down(Key::Escape) {
         time.update();
+        input.update(&window);
+
 
         let r = ((time.total).sin() * 127.0 + 128.0) as u32;
         let g = ((time.total + 2.0).sin() * 127.0 + 128.0) as u32;
