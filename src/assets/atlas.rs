@@ -45,7 +45,7 @@ pub struct Atlas {
     pub image: RgbaImage,
     pub frames: HashMap<String, Frame>,
     pub tile_size: u32,
-    pub version: u32
+    pub version: u32,
 }
 
 impl Atlas {
@@ -71,7 +71,12 @@ impl Atlas {
             frames.insert(name, frame);
         }
 
-        Ok(Atlas { image, frames, tile_size: atlas_json.meta.tile_size, version: atlas_json.meta.version })
+        Ok(Atlas {
+            image,
+            frames,
+            tile_size: atlas_json.meta.tile_size,
+            version: atlas_json.meta.version,
+        })
     }
 
     /// Get frame by name
