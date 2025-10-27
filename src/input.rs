@@ -98,7 +98,7 @@ impl InputState {
 mod tests {
     use super::*;
 
-    /// Test that InputState initializes with all keys set to false.
+    /// Test that InputState initializes with all keys set to false
     #[test]
     fn test_new_input_state_initializes_all_false() {
         let input_state = InputState::new();
@@ -111,7 +111,7 @@ mod tests {
         assert!(!snapshot.escape);
     }
 
-    /// Test that InputState can be cloned and both instances share state.
+    /// Test that InputState can be cloned and both instances share state
     #[test]
     fn test_input_state_clone_shares_state() {
         let input_state1 = InputState::new();
