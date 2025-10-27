@@ -6,31 +6,48 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
-/// Frame from JSON
+/// Represents a frame definition from JSON atlas data.
 #[derive(Deserialize, Debug)]
 struct JsonFrame {
+    // X coordinate of the frame in the atlas image
     x: u32,
+    // Y coordinate of the frame in the atlas image
     y: u32,
+    // Width of the frame in pixels
     w: u32,
+    // Height of the frame in pixels
     h: u32,
 }
 
-/// Meta information from JSON
+/// Meta information about the atlas from JSON.
 #[derive(Deserialize, Debug)]
 struct Meta {
+    // Path to the atlas image file
     image: String,
+    // Size of tiles in the atlas
     tile_size: u32,
+    // Version of the atlas format
     version: u32,
 }
 
-/// Parsed JSON file
+/// Complete parsed JSON atlas data structure.
 #[derive(Deserialize, Debug)]
 struct AtlasJson {
+    // Mapping of frame names to their definitions
     frames: HashMap<String, JsonFrame>,
+    // Meta information about the atlas
     meta: Meta,
 }
 
-/// Frame
+/// Represents a single frame in the atlas.
+///
+/// # Public fields
+///
+/// * `name` - Name identifier of the frame
+/// * `x` - X coordinate of the frame in the atlas image
+/// * `y` - Y coordinate of the frame in the atlas image
+/// * `w` - Width of the frame in pixels
+/// * `h` - Height of the frame in pixels
 #[derive(Debug)]
 pub struct Frame {
     pub name: String,
@@ -40,7 +57,14 @@ pub struct Frame {
     pub h: u32,
 }
 
-/// Parsed atlas
+/// Complete atlas containing the image and frame definitions
+///
+/// # Public fields
+///
+/// * `image` - The loaded RGBA image data of the atlas
+/// * `frames` - Mapping of frame names to frame definitions
+/// * `tile_size` - Size of tiles in the atlas
+/// * `version` - Version of the atlas
 #[derive(Debug)]
 pub struct Atlas {
     pub image: RgbaImage,
@@ -50,7 +74,15 @@ pub struct Atlas {
 }
 
 impl Atlas {
-    /// Load atlas from JSON file
+    /// Loads a texture atlas from a JSON file
+    ///
+    /// # Arguments
+    ///
+    /// * `json_path` - Path to the atlas JSON file
+    ///
+    /// # Returns
+    ///
+    /// * `Result<Self, Box<dyn Error>>` - Ok(Atlas) if successful, Err otherwise
     pub fn load<P: AsRef<Path>>(json_path: P) -> Result<Self, Box<dyn Error>> {
         let file = File::open(&json_path)?;
 
@@ -86,94 +118,86 @@ impl Atlas {
         })
     }
 
-    /// Get frame by name
+    /// Retrieves a frame by its name
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - The name of the frame to retrieve
+    ///
+    /// # Returns
+    ///
+    /// * `Option<&Frame>` - Some(&Frame) if frame exists, None otherwise
     pub fn get_frame(&self, name: &str) -> Option<&Frame> {
         self.frames.get(name)
     }
 
-    // Check if atlas contains frame with given name
+    /// Checks if the atlas contains a frame with the given name
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - The name of the frame to check for
+    ///
+    /// # Returns
+    ///
+    /// * `bool` - true if frame exists, false otherwise
     pub fn contains_frame(&self, name: &str) -> bool {
         self.frames.contains_key(name)
     }
 
-    /// Get count of frames in atlas
+    /// Gets the total number of frames in the atlas
+    ///
+    /// # Returns
+    ///
+    /// * `usize` - The count of frames in the atlas
     pub fn frame_count(&self) -> usize {
         self.frames.len()
     }
 
-    /// Iterate through frames
+    /// Returns an iterator over all frames in the atlas
+    ///
+    /// # Returns
+    ///
+    /// * `impl Iterator<Item = &Frame>` - Iterator over frame references
     pub fn iter_frames(&self) -> impl Iterator<Item = &Frame> {
         self.frames.values()
     }
-
-    /// Get image
-    pub fn image(&self) -> &RgbaImage {
-        &self.image
-    }
-
-    /// Get tile size
-    pub fn tile_size(&self) -> u32 {
-        self.tile_size
-    }
 }
-
-/*fn main() -> Result<(), Box<dyn Error>> {
-    let atlas = Atlas::load("assets/atlas.json")?;
-
-    println!("Loaded {} frames from image: {}", atlas.frame_count(), "atlas.png");
-
-    if let Some(frame) = atlas.get_frame("dirt_tile_big_0_0") {
-        println!("Frame 'dirt_tile_big_0_0': {:?}", frame);
-        println!("Position: ({}, {})", frame.x, frame.y);
-        println!("Size: {}x{}", frame.w, frame.h);
-    }
-
-    for frame in atlas.iter_frames() {
-        println!("{}: {}x{} at ({}, {})", frame.name, frame.w, frame.h, frame.x, frame.y);
-    }
-
-    Ok(())
-} */
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    // Test atlas JSON parsing on example
     #[test]
-    fn test_json_parsing() {
-        let json_data = r#"
-        {
-          "frames": {
-            "dirt_tile_big_0_0": {
-              "x": 1,
-              "y": 2,
-              "w": 15,
-              "h": 15
-            },
-            "test_tile_1_0": {
-              "x": 17,
-              "y": 2,
-              "w": 15,
-              "h": 15
-            }
-          },
-          "meta": {
-            "image": "atlas.png",
-            "tile_size": 16,
-            "version": 1
-          }
-        }"#;
-
-        let atlas_json: AtlasJson = serde_json::from_str(json_data).unwrap();
-        assert_eq!(atlas_json.frames.len(), 2);
-        assert_eq!(atlas_json.meta.image, "atlas.png");
-        assert_eq!(atlas_json.meta.tile_size, 16);
-        assert_eq!(atlas_json.meta.version, 1);
-
-        let frame = &atlas_json.frames["dirt_tile_big_0_0"];
-        assert_eq!(frame.x, 1);
-        assert_eq!(frame.y, 2);
-        assert_eq!(frame.w, 15);
-        assert_eq!(frame.h, 15);
+    fn test_load_entities_atlas() {
+        let atlas = Atlas::load("assets/entities/atlas.json").unwrap();
+        
+        assert_eq!(atlas.tile_size, 16);
+        assert_eq!(atlas.version, 1);
+        
+        assert_eq!(atlas.frame_count(), 2);
+        
+        assert!(atlas.contains_frame("knight_0_0"));
+        assert!(atlas.contains_frame("imp_20_0"));
+        
+        let knight_frame = atlas.get_frame("knight_0_0").unwrap();
+        assert_eq!(knight_frame.name, "knight_0_0");
+        assert_eq!(knight_frame.x, 4);
+        assert_eq!(knight_frame.y, 14);
+        assert_eq!(knight_frame.w, 10);
+        assert_eq!(knight_frame.h, 10);
+        
+        let imp_frame = atlas.get_frame("imp_20_0").unwrap();
+        assert_eq!(imp_frame.name, "imp_20_0");
+        assert_eq!(imp_frame.x, 5);
+        assert_eq!(imp_frame.y, 354);
+        assert_eq!(imp_frame.w, 10);
+        assert_eq!(imp_frame.h, 10);
+        
+        let mut frame_names: Vec<String> = atlas.iter_frames().map(|f| f.name.clone()).collect();
+        frame_names.sort();
+        assert_eq!(frame_names, vec!["imp_20_0", "knight_0_0"]);
+        
+        assert!(!atlas.image.is_empty());
     }
 }
