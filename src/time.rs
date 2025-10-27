@@ -1,24 +1,32 @@
 use std::time::Instant;
 
-/// Time tracking structure for game loops and frame timing
+/// Time tracking structure for game loops and frame timing.
 ///
-/// Tracks delta time (time between frames) and total elapsed time
+/// Tracks delta time (time between frames) and total elapsed time.
 pub struct Time {
-    pub delta: f32,        // interval between frames (sec)
-    pub total: f32,        // total time elapsed (sec)
-    last_instant: Instant, // delta calucalution
+    // Interval between frames (sec)
+    pub delta: f32,
+    // Total time elapsed (sec)
+    pub total: f32,
+    // Delta calucalution
+    last_instant: Instant,
 }
 
 impl Time {
-    /// Creates a new Time instance with zero values and starts tracking
+    /// Creates a new Time instance with zero values and starts tracking.
+    ///
+    /// # Returns
+    ///
+    /// A new `Time` instance with zero values of delta and total
+    // and last_instant set to the current time.
     pub fn new() -> Self {
         Self { delta: 0.0, total: 0.0, last_instant: Instant::now() }
     }
 
-    /// Updates time measurements. Should be called once per frame
+    /// Updates time measurements.
     ///
     /// Calculates the time elapsed since the last update and updates
-    /// both delta and total time values
+    /// both delta and total time values.
     pub fn update(&mut self) {
         let now = Instant::now();
         self.delta = now.duration_since(self.last_instant).as_secs_f32();
@@ -33,6 +41,7 @@ mod tests {
     use std::thread;
     use std::time::Duration;
 
+    /// Test that Time initializes with correct default values
     #[test]
     fn test_initialization() {
         let time = Time::new();
@@ -40,6 +49,7 @@ mod tests {
         assert_eq!(time.total, 0.0);
     }
 
+    /// Test that update() method properly calculates delta time and updates total time
     #[test]
     fn test_update_updates_values() {
         let mut time = Time::new();
@@ -53,6 +63,7 @@ mod tests {
         assert!(time.total >= time.delta, "Total should be at least as large as delta");
     }
 
+    /// Test that multiple consecutive updates work correctly
     #[test]
     fn test_multiple_updates() {
         let mut time = Time::new();
@@ -69,6 +80,7 @@ mod tests {
         assert!(time.total == first_total + time.delta, "Total should be sum of all deltas");
     }
 
+    /// Test that total time accurately accumulates delta values over multiple updates
     #[test]
     fn test_total_accumulation() {
         let mut time = Time::new();
