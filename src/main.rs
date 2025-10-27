@@ -16,14 +16,11 @@ const LOGIC_HEIGHT: usize = 200;
 const UPSCALE: usize = 5;
 
 fn main() {
-    // some shit
-    let result = get_five();
-    println!("Function returned: {}", result);
     // load atlas
     let tiles_atlas = assets::Atlas::load("assets/tiles/atlas.json");
     let entity_atlas = assets::Atlas::load("../assets/entities/atlas.json");
-    // load game info
 
+    // load game info
     let game = assets::GameMap::load("input.json");
 
     // init buffer
