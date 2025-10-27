@@ -71,7 +71,6 @@ mod tests {
         let mut time = Time::new();
 
         time.update();
-        let first_delta = time.delta;
         let first_total = time.total;
 
         thread::sleep(Duration::from_millis(5));
