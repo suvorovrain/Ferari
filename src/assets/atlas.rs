@@ -6,6 +6,10 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
+/// ============================
+/// JSON-level structs
+/// ============================
+
 /// Represents a frame definition from JSON atlas data.
 #[derive(Deserialize, Debug)]
 struct JsonFrame {
@@ -38,6 +42,10 @@ struct AtlasJson {
     // Meta information about the atlas
     meta: Meta,
 }
+
+/// ============================
+/// Game-level structs
+/// ============================
 
 /// Represents a single frame in the atlas.
 ///
@@ -72,6 +80,10 @@ pub struct Atlas {
     pub tile_size: u32,
     pub version: u32,
 }
+
+/// ============================
+/// Implementation
+/// ============================
 
 impl Atlas {
     /// Loads a texture atlas from a JSON file
@@ -162,6 +174,11 @@ impl Atlas {
         self.frames.values()
     }
 }
+
+/// ============================
+/// Tests
+/// ============================
+
 
 #[cfg(test)]
 mod tests {
