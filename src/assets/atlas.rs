@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::fs::File;
 use std::io::BufReader;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /// Frame from JSON
 #[derive(Deserialize, Debug)]
@@ -41,6 +41,7 @@ pub struct Frame {
 }
 
 /// Parsed atlas
+#[derive(Debug)]
 pub struct Atlas {
     pub image: RgbaImage,
     pub frames: HashMap<String, Frame>,
@@ -51,11 +52,17 @@ pub struct Atlas {
 impl Atlas {
     /// Load atlas from JSON file
     pub fn load<P: AsRef<Path>>(json_path: P) -> Result<Self, Box<dyn Error>> {
-        let file = File::open(json_path)?;
+        let file = File::open(&json_path)?;
+
         let reader = BufReader::new(file);
         let atlas_json: AtlasJson = serde_json::from_reader(reader)?;
 
-        let image_path = Path::new(&atlas_json.meta.image);
+        let image_path = json_path
+            .as_ref()
+            .parent()
+            .map(|dir| dir.join(&atlas_json.meta.image))
+            .unwrap_or_else(|| PathBuf::from(&atlas_json.meta.image));
+
         let image = open(image_path)?.to_rgba8();
 
         let mut frames = HashMap::new();

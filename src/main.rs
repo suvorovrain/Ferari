@@ -1,11 +1,12 @@
-use std::sync::atomic::{Ordering, AtomicBool};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
-use ferari::get_five;
 use crossbeam_channel::bounded;
+use ferari::get_five;
 
+mod assets;
 mod draw;
 mod input;
 mod time;
@@ -18,6 +19,12 @@ fn main() {
     // some shit
     let result = get_five();
     println!("Function returned: {}", result);
+    // load atlas
+    let tiles_atlas = assets::Atlas::load("assets/tiles/atlas.json");
+    let entity_atlas = assets::Atlas::load("../assets/entities/atlas.json");
+    // load game info
+
+    let game = assets::GameMap::load("input.json");
 
     // init buffer
     let mut back_buffer: Vec<u32> = vec![0; LOGIC_WIDTH * LOGIC_HEIGHT];
@@ -36,7 +43,14 @@ fn main() {
         let input_state = input_state.clone();
         let running = running.clone();
         thread::spawn(move || {
-            draw::run_draw_thread(rx_frame, input_state, running, LOGIC_WIDTH, LOGIC_HEIGHT,UPSCALE);
+            draw::run_draw_thread(
+                rx_frame,
+                input_state,
+                running,
+                LOGIC_WIDTH,
+                LOGIC_HEIGHT,
+                UPSCALE,
+            );
         });
     }
 
