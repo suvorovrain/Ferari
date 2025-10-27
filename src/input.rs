@@ -10,11 +10,11 @@ use std::sync::{
 ///
 /// # Public fields
 ///
-/// * `up` - Is true when the W key (up movement) was pressed when the snapshot was taken
-/// * `left` - Is true when the A key (left movement) was pressed when the snapshot was taken
-/// * `down` - Is true when the S key (down movement) was pressed when the snapshot was taken
-/// * `right` - Is true when the D key (right movement) was pressed when the snapshot was taken
-/// * `escape` - Is true when the Escape key was pressed when the snapshot was taken
+/// * `up` - Indicates if the W key (up movement) was pressed when the snapshot was taken
+/// * `left` - Indicates if the A key (left movement) was pressed when the snapshot was taken
+/// * `down` - Indicates if the S key (down movement) was pressed when the snapshot was taken
+/// * `right` - Indicates if the D key (right movement) was pressed when the snapshot was taken
+/// * `escape` - Indicates if the Escape key was pressed when the snapshot was taken
 pub struct InputSnapshot {
     pub up: bool,
     pub left: bool,
