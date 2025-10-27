@@ -31,7 +31,7 @@ impl Camera {
     ///
     /// A new `Camera` instance with all values initialized to specified arguments.
     pub fn new(center_x: f32, center_y: f32, width: u16, height: u16) -> Self {
-        Self { center_x: center_x, center_y: center_y, width: width, height: height }
+        Self { center_x, center_y, width, height }
     }
 
     /// Checks if a point is visible within the camera's viewport.
@@ -47,8 +47,8 @@ impl Camera {
     ///
     /// `true` if the point is visible within the camera's viewport, `false` otherwise.
     pub fn is_visible(&self, x: f32, y: f32) -> bool {
-        return ((self.center_x - x).abs() < (self.width as f32) / 2.0)
-            && ((self.center_y - y).abs() < (self.height as f32) / 2.0);
+        ((self.center_x - x).abs() < (self.width as f32) / 2.0)
+            && ((self.center_y - y).abs() < (self.height as f32) / 2.0)
     }
 }
 

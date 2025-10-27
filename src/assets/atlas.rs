@@ -6,9 +6,9 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
-/// ============================
-/// JSON-level structs
-/// ============================
+// ============================
+// JSON-level structs
+// ============================
 
 /// Frame definition from JSON atlas data.
 ///
@@ -52,9 +52,9 @@ struct AtlasJson {
     pub meta: Meta,
 }
 
-/// ============================
-/// Game-level structs
-/// ============================
+// ============================
+// Game-level structs
+// ============================
 
 /// Represents a single frame in the atlas.
 ///
@@ -90,9 +90,9 @@ pub struct Atlas {
     pub version: u32,
 }
 
-/// ============================
-/// Implementation
-/// ============================
+// ============================
+// Implementation
+// ============================
 
 impl Atlas {
     /// Loads a texture atlas from a JSON file.
@@ -184,10 +184,9 @@ impl Atlas {
     }
 }
 
-/// ============================
-/// Tests
-/// ============================
-
+// ============================
+// Tests
+// ============================
 
 #[cfg(test)]
 mod tests {
@@ -197,33 +196,33 @@ mod tests {
     #[test]
     fn test_load_entities_atlas() {
         let atlas = Atlas::load("assets/entities/atlas.json").unwrap();
-        
+
         assert_eq!(atlas.tile_size, 16);
         assert_eq!(atlas.version, 1);
-        
+
         assert_eq!(atlas.frame_count(), 2);
-        
+
         assert!(atlas.contains_frame("knight_0_0"));
         assert!(atlas.contains_frame("imp_20_0"));
-        
+
         let knight_frame = atlas.get_frame("knight_0_0").unwrap();
         assert_eq!(knight_frame.name, "knight_0_0");
         assert_eq!(knight_frame.x, 4);
         assert_eq!(knight_frame.y, 14);
         assert_eq!(knight_frame.w, 10);
         assert_eq!(knight_frame.h, 10);
-        
+
         let imp_frame = atlas.get_frame("imp_20_0").unwrap();
         assert_eq!(imp_frame.name, "imp_20_0");
         assert_eq!(imp_frame.x, 5);
         assert_eq!(imp_frame.y, 354);
         assert_eq!(imp_frame.w, 10);
         assert_eq!(imp_frame.h, 10);
-        
+
         let mut frame_names: Vec<String> = atlas.iter_frames().map(|f| f.name.clone()).collect();
         frame_names.sort();
         assert_eq!(frame_names, vec!["imp_20_0", "knight_0_0"]);
-        
+
         assert!(!atlas.image.is_empty());
     }
 }

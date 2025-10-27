@@ -5,9 +5,9 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
-/// ============================
-/// JSON-level structs
-/// ============================
+// ============================
+// JSON-level structs
+// ============================
 
 /// Behaviour data from JSON.
 ///
@@ -120,9 +120,9 @@ pub struct JsonMap {
     pub meta: Meta,
 }
 
-/// ============================
-/// Game-level structs
-/// ============================
+// ============================
+// Game-level structs
+// ============================
 
 /// Types of behaviours that mobs can show.
 #[derive(Debug, Clone, PartialEq)]
@@ -225,9 +225,9 @@ pub struct GameMap {
     pub tiles: HashMap<String, Tile>,
 }
 
-/// ============================
-/// Implementation
-/// ============================
+// ============================
+// Implementation
+// ============================
 
 impl GameMap {
     /// Loads and parses a game map from a JSON file.
@@ -424,10 +424,9 @@ impl Tile {
     }
 }
 
-/// ============================
-/// Tests
-/// ============================
-
+// ============================
+// Tests
+// ============================
 
 #[cfg(test)]
 mod tests {
@@ -437,15 +436,15 @@ mod tests {
     #[test]
     fn test_load_game_map() {
         let game_map = GameMap::load("input.json").unwrap();
-        
+
         assert_eq!(game_map.name, "demo_map");
         assert_eq!(game_map.tile_size, 16);
         assert_eq!(game_map.size, [4, 4]);
-        
+
         assert_eq!(game_map.mob_count(), 2);
         assert_eq!(game_map.object_count(), 1);
         assert_eq!(game_map.tile_count(), 16);
-        
+
         let player = game_map.get_mob("player").unwrap();
         assert_eq!(player.name, "player");
         assert_eq!(player.x_start, 0);
@@ -453,13 +452,13 @@ mod tests {
         assert_eq!(player.asset, "knight_0_0");
         assert_eq!(player.is_player, true);
         assert!(player.behaviour.is_some());
-        
+
         let player_behaviour = player.behaviour.as_ref().unwrap();
         assert_eq!(player_behaviour.behaviour_type, BehaviourType::Controlled);
         assert_eq!(player_behaviour.direction, None);
         assert_eq!(player_behaviour.speed, None);
         assert_eq!(player.start_position(), (0, 0));
-        
+
         let mob_1 = game_map.get_mob("mob_1").unwrap();
         assert_eq!(mob_1.name, "mob_1");
         assert_eq!(mob_1.x_start, 3);
@@ -467,13 +466,13 @@ mod tests {
         assert_eq!(mob_1.asset, "imp_20_0");
         assert_eq!(mob_1.is_player, false);
         assert!(mob_1.behaviour.is_some());
-        
+
         let mob_behaviour = mob_1.behaviour.as_ref().unwrap();
         assert_eq!(mob_behaviour.behaviour_type, BehaviourType::Walker);
         assert_eq!(mob_behaviour.direction, Some("left".to_string()));
         assert_eq!(mob_behaviour.speed, Some(12.0));
         assert_eq!(mob_1.start_position(), (3, 3));
-        
+
         let obj_1 = game_map.get_object("obj_1").unwrap();
         assert_eq!(obj_1.name, "obj_1");
         assert_eq!(obj_1.x, 2);
@@ -482,29 +481,29 @@ mod tests {
         assert_eq!(obj_1.collidable, false);
         assert_eq!(obj_1.shadow, false);
         assert_eq!(obj_1.position(), (2, 1));
-        
+
         let tile_1 = game_map.get_tile("tile_1").unwrap();
         assert_eq!(tile_1.name, "tile_1");
         assert_eq!(tile_1.x, 0);
         assert_eq!(tile_1.y, 0);
         assert_eq!(tile_1.asset, "dirt_tile_big_0_0");
         assert_eq!(tile_1.position(), (0, 0));
-        
+
         let tile_16 = game_map.get_tile("tile_16").unwrap();
         assert_eq!(tile_16.name, "tile_16");
         assert_eq!(tile_16.x, 3);
         assert_eq!(tile_16.y, 3);
         assert_eq!(tile_16.asset, "dirt_tile_big_0_0");
         assert_eq!(tile_16.position(), (3, 3));
-        
+
         let mob_names: Vec<String> = game_map.iter_mobs().map(|m| m.name.clone()).collect();
         assert_eq!(mob_names.len(), 2);
         assert!(mob_names.contains(&"player".to_string()));
         assert!(mob_names.contains(&"mob_1".to_string()));
-        
+
         let object_names: Vec<String> = game_map.iter_objects().map(|o| o.name.clone()).collect();
         assert_eq!(object_names, vec!["obj_1"]);
-        
+
         let tile_names: Vec<String> = game_map.iter_tiles().map(|t| t.name.clone()).collect();
         assert_eq!(tile_names.len(), 16);
         assert!(tile_names.contains(&"tile_1".to_string()));
