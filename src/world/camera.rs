@@ -1,4 +1,4 @@
-/// A camera that represents a rectangular viewport in 2D space.
+/// A camera that represents a rectangular viewport.
 ///
 /// The camera is defined by its center position and viewport dimensions.
 /// It can be used to determine which points or objects are visible within
@@ -29,7 +29,7 @@ impl Camera {
     ///
     /// # Returns
     ///
-    /// A new `Camera` instance with all values initialized to specified arguments
+    /// A new `Camera` instance with all values initialized to specified arguments.
     pub fn new(center_x: f32, center_y: f32, width: u16, height: u16) -> Self {
         Self { center_x: center_x, center_y: center_y, width: width, height: height }
     }
@@ -45,7 +45,7 @@ impl Camera {
     ///
     /// # Returns
     ///
-    /// `true` if the point is visible within the camera's viewport, `false` otherwise
+    /// `true` if the point is visible within the camera's viewport, `false` otherwise.
     pub fn is_visible(&self, x: f32, y: f32) -> bool {
         return ((self.center_x - x).abs() < (self.width as f32) / 2.0)
             && ((self.center_y - y).abs() < (self.height as f32) / 2.0);
@@ -56,7 +56,7 @@ impl Camera {
 mod tests {
     use super::*;
 
-    /// Test that Camera initializes with values initialized to specified arguments.
+    /// Test that Camera initializes with values initialized to specified arguments
     #[test]
     fn test_camera_creation() {
         let camera = Camera::new(100.0, 200.0, 800, 600);
@@ -66,14 +66,14 @@ mod tests {
         assert_eq!(camera.height, 600);
     }
 
-    /// Test that the center point of the camera is visible.
+    /// Test that the center point of the camera is visible
     #[test]
     fn test_is_visible_center_point() {
         let camera = Camera::new(100.0, 200.0, 800, 600);
         assert!(camera.is_visible(100.0, 200.0));
     }
 
-    /// Test points that should be within the camera's viewport.
+    /// Test points that should be within the camera's viewport
     #[test]
     fn test_is_visible_within_bounds() {
         let camera = Camera::new(100.0, 200.0, 800, 600);
@@ -86,7 +86,7 @@ mod tests {
         assert!(camera.is_visible(-250.0, 200.0));
     }
 
-    /// Test points that should be outside the camera's viewport.
+    /// Test points that should be outside the camera's viewport
     #[test]
     fn test_is_visible_out_of_bounds() {
         let camera = Camera::new(100.0, 200.0, 800, 600);
@@ -98,10 +98,11 @@ mod tests {
         assert!(!camera.is_visible(500.0, 500.0));
     }
 
-    /// Test edge cases with points very close to the viewport boundaries.
+    /// Test edge cases with points very close to the viewport boundaries
     #[test]
     fn test_is_visible_edge_cases() {
         let camera = Camera::new(100.0, 200.0, 800, 600);
+
         // Points near the boundary (should be visible since it's < width/2)
         assert!(camera.is_visible(100.0 + 399.9, 200.0)); // Just inside near right edge
         assert!(camera.is_visible(100.0 - 399.9, 200.0)); // Just inside near left edge

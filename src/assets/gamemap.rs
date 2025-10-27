@@ -205,7 +205,7 @@ pub struct Tile {
     pub asset: String,
 }
 
-/// Game map, as parsed and ready to use
+/// Game map, as parsed and ready to use.
 ///
 /// # Public fields
 ///
@@ -230,7 +230,7 @@ pub struct GameMap {
 /// ============================
 
 impl GameMap {
-    /// Loads and parses a game map from a JSON file
+    /// Loads and parses a game map from a JSON file.
     ///
     /// # Arguments
     ///
@@ -238,7 +238,7 @@ impl GameMap {
     ///
     /// # Returns
     ///
-    /// * `Result<Self, Box<dyn Error>>` - Parsed GameMap on success, error on failure
+    /// * `Result<Self, Box<dyn Error>>` - Parsed GameMap on success, error on failure.
     pub fn load<P: AsRef<Path>>(json_path: P) -> Result<Self, Box<dyn Error>> {
         let file = File::open(json_path)?;
         let reader = BufReader::new(file);
@@ -297,7 +297,7 @@ impl GameMap {
         })
     }
 
-    /// Retrieves a mob by name
+    /// Retrieves a mob by name.
     ///
     /// # Arguments
     ///
@@ -305,12 +305,12 @@ impl GameMap {
     ///
     /// # Returns
     ///
-    /// * `Option<&Mob>` - Reference to the mob if found, None otherwise
+    /// * `Option<&Mob>` - Reference to the mob if found, None otherwise.
     pub fn get_mob(&self, name: &str) -> Option<&Mob> {
         self.mobs.get(name)
     }
 
-    /// Retrieves an object by name
+    /// Retrieves an object by name.
     ///
     /// # Arguments
     ///
@@ -318,12 +318,12 @@ impl GameMap {
     ///
     /// # Returns
     ///
-    /// * `Option<&Object>` - Reference to the object if found, None otherwise
+    /// * `Option<&Object>` - Reference to the object if found, None otherwise.
     pub fn get_object(&self, name: &str) -> Option<&Object> {
         self.objects.get(name)
     }
 
-    /// Retrieves a tile by name
+    /// Retrieves a tile by name.
     ///
     /// # Arguments
     ///
@@ -331,94 +331,94 @@ impl GameMap {
     ///
     /// # Returns
     ///
-    /// * `Option<&Tile>` - Reference to the tile if found, None otherwise
+    /// * `Option<&Tile>` - Reference to the tile if found, None otherwise.
     pub fn get_tile(&self, name: &str) -> Option<&Tile> {
         self.tiles.get(name)
     }
 
-    /// Returns the number of mobs in the map
+    /// Returns the number of mobs in the map.
     ///
     /// # Returns
     ///
-    /// * `usize` - Count of mobs
+    /// * `usize` - Count of mobs.
     pub fn mob_count(&self) -> usize {
         self.mobs.len()
     }
 
-    /// Returns the number of objects in the map
+    /// Returns the number of objects in the map.
     ///
     /// # Returns
     ///
-    /// * `usize` - Count of objects
+    /// * `usize` - Count of objects.
     pub fn object_count(&self) -> usize {
         self.objects.len()
     }
 
-    /// Returns the number of tiles in the map
+    /// Returns the number of tiles in the map.
     ///
     /// # Returns
     ///
-    /// * `usize` - Count of tiles
+    /// * `usize` - Count of tiles.
     pub fn tile_count(&self) -> usize {
         self.tiles.len()
     }
 
-    /// Returns an iterator over all mobs in the map
+    /// Returns an iterator over all mobs in the map.
     ///
     /// # Returns
     ///
-    /// * `impl Iterator<Item = &Mob>` - Iterator over mob references
+    /// * `impl Iterator<Item = &Mob>` - Iterator over mob references.
     pub fn iter_mobs(&self) -> impl Iterator<Item = &Mob> {
         self.mobs.values()
     }
 
-    /// Returns an iterator over all objects in the map
+    /// Returns an iterator over all objects in the map.
     ///
     /// # Returns
     ///
-    /// * `impl Iterator<Item = &Object>` - Iterator over object references
+    /// * `impl Iterator<Item = &Object>` - Iterator over object references.
     pub fn iter_objects(&self) -> impl Iterator<Item = &Object> {
         self.objects.values()
     }
 
-    /// Returns an iterator over all tiles in the map
+    /// Returns an iterator over all tiles in the map.
     ///
     /// # Returns
     ///
-    /// * `impl Iterator<Item = &Tile>` - Iterator over tile references
+    /// * `impl Iterator<Item = &Tile>` - Iterator over tile references.
     pub fn iter_tiles(&self) -> impl Iterator<Item = &Tile> {
         self.tiles.values()
     }
 }
 
 impl Mob {
-    /// Returns the start position of the mob
+    /// Returns the start position of the mob.
     ///
     /// # Returns
     ///
-    /// * `(u32, u32)` - Tuple of (x, y) coordinates
+    /// * `(u32, u32)` - Tuple of (x, y) coordinates.
     pub fn start_position(&self) -> (u32, u32) {
         (self.x_start, self.y_start)
     }
 }
 
 impl Object {
-    /// Returns the position of the object
+    /// Returns the position of the object.
     ///
     /// # Returns
     ///
-    /// * `(u32, u32)` - Tuple of (x, y) coordinates
+    /// * `(u32, u32)` - Tuple of (x, y) coordinates.
     pub fn position(&self) -> (u32, u32) {
         (self.x, self.y)
     }
 }
 
 impl Tile {
-    /// Returns the position of the tile
+    /// Returns the position of the tile.
     ///
     /// # Returns
     ///
-    /// * `(u32, u32)` - Tuple of (x, y) coordinates
+    /// * `(u32, u32)` - Tuple of (x, y) coordinates.
     pub fn position(&self) -> (u32, u32) {
         (self.x, self.y)
     }

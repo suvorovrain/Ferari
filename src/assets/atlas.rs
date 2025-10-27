@@ -74,7 +74,7 @@ pub struct Frame {
     pub h: u32,
 }
 
-/// Complete atlas containing the image and frame definitions
+/// Complete atlas containing the image and frame definitions.
 ///
 /// # Public fields
 ///
@@ -95,7 +95,7 @@ pub struct Atlas {
 /// ============================
 
 impl Atlas {
-    /// Loads a texture atlas from a JSON file
+    /// Loads a texture atlas from a JSON file.
     ///
     /// # Arguments
     ///
@@ -103,7 +103,7 @@ impl Atlas {
     ///
     /// # Returns
     ///
-    /// * `Result<Self, Box<dyn Error>>` - Ok(Atlas) if successful, Err otherwise
+    /// * `Result<Self, Box<dyn Error>>` - Ok(Atlas) if successful, Err otherwise.
     pub fn load<P: AsRef<Path>>(json_path: P) -> Result<Self, Box<dyn Error>> {
         let file = File::open(&json_path)?;
 
@@ -139,7 +139,7 @@ impl Atlas {
         })
     }
 
-    /// Retrieves a frame by its name
+    /// Retrieves a frame by its name.
     ///
     /// # Arguments
     ///
@@ -147,12 +147,12 @@ impl Atlas {
     ///
     /// # Returns
     ///
-    /// * `Option<&Frame>` - Some(&Frame) if frame exists, None otherwise
+    /// * `Option<&Frame>` - Some(&Frame) if frame exists, None otherwise.
     pub fn get_frame(&self, name: &str) -> Option<&Frame> {
         self.frames.get(name)
     }
 
-    /// Checks if the atlas contains a frame with the given name
+    /// Checks if the atlas contains a frame with the given name.
     ///
     /// # Arguments
     ///
@@ -160,25 +160,25 @@ impl Atlas {
     ///
     /// # Returns
     ///
-    /// * `bool` - true if frame exists, false otherwise
+    /// * `bool` - true if frame exists, false otherwise.
     pub fn contains_frame(&self, name: &str) -> bool {
         self.frames.contains_key(name)
     }
 
-    /// Gets the total number of frames in the atlas
+    /// Gets the total number of frames in the atlas.
     ///
     /// # Returns
     ///
-    /// * `usize` - The count of frames in the atlas
+    /// * `usize` - The count of frames in the atlas.
     pub fn frame_count(&self) -> usize {
         self.frames.len()
     }
 
-    /// Returns an iterator over all frames in the atlas
+    /// Returns an iterator over all frames in the atlas.
     ///
     /// # Returns
     ///
-    /// * `impl Iterator<Item = &Frame>` - Iterator over frame references
+    /// * `impl Iterator<Item = &Frame>` - Iterator over frame references.
     pub fn iter_frames(&self) -> impl Iterator<Item = &Frame> {
         self.frames.values()
     }
