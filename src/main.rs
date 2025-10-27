@@ -4,7 +4,6 @@ use std::thread;
 use std::time::Duration;
 
 use crossbeam_channel::bounded;
-use ferari::get_five;
 
 mod assets;
 mod draw;
