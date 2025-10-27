@@ -3,13 +3,15 @@ use std::time::Instant;
 /// Time tracking structure for game loops and frame timing.
 ///
 /// Tracks delta time (time between frames) and total elapsed time.
+///
+/// # Public fields
+///
+/// * `delta` - Interval between frames (sec)
+/// * `total` - Total time elapsed (sec)
 pub struct Time {
-    // Interval between frames (sec)
     pub delta: f32,
-    // Total time elapsed (sec)
     pub total: f32,
-    // Delta calucalution
-    last_instant: Instant,
+    last_instant: Instant, // Delta calucalution
 }
 
 impl Time {
