@@ -10,37 +10,46 @@ use std::path::{Path, PathBuf};
 /// JSON-level structs
 /// ============================
 
-/// Represents a frame definition from JSON atlas data.
+/// Frame definition from JSON atlas data.
+///
+/// # Public fields
+///
+/// * `x` - X coordinate of the frame in the atlas image
+/// * `y` - Y coordinate of the frame in the atlas image
+/// * `w` - Width of the frame in pixels
+/// * `h` - Height of the frame in pixels
 #[derive(Deserialize, Debug)]
 struct JsonFrame {
-    // X coordinate of the frame in the atlas image
-    x: u32,
-    // Y coordinate of the frame in the atlas image
-    y: u32,
-    // Width of the frame in pixels
-    w: u32,
-    // Height of the frame in pixels
-    h: u32,
+    pub x: u32,
+    pub y: u32,
+    pub w: u32,
+    pub h: u32,
 }
 
 /// Meta information about the atlas from JSON.
+///
+/// # Public fields
+///
+/// * `image` - Path to the atlas image file
+/// * `tile_size` - Size of tiles in the atlas
+/// * `version` - Version of the atlas format
 #[derive(Deserialize, Debug)]
 struct Meta {
-    // Path to the atlas image file
-    image: String,
-    // Size of tiles in the atlas
-    tile_size: u32,
-    // Version of the atlas format
-    version: u32,
+    pub image: String,
+    pub tile_size: u32,
+    pub version: u32,
 }
 
 /// Complete parsed JSON atlas data structure.
+///
+/// # Public fields
+///
+/// * `frames` - Mapping of frame names to their definitions
+/// * `meta` - Meta information about the atlas
 #[derive(Deserialize, Debug)]
 struct AtlasJson {
-    // Mapping of frame names to their definitions
-    frames: HashMap<String, JsonFrame>,
-    // Meta information about the atlas
-    meta: Meta,
+    pub frames: HashMap<String, JsonFrame>,
+    pub meta: Meta,
 }
 
 /// ============================
