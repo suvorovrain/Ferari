@@ -19,24 +19,24 @@ fn normalize_vector(vec: (f32, f32)) -> (f32, f32) {
     }
 }
 
-pub fn make_step(curState: &mut State, inputState: &InputSnapshot) {
+pub fn make_step(curr_state: &mut State, input_state: &InputSnapshot) {
     let player_speed = 0.75;
     let collision_distance = 10.0;
 
-    let player = &mut curState.player;
+    let player = &mut curr_state.player;
 
     let mut player_move_vec = (0.0, 0.0);
-    player_move_vec.0 += if inputState.right { 1.0 } else { 0.0 };
-    player_move_vec.0 += if inputState.left { -1.0 } else { 0.0 };
-    player_move_vec.1 += if inputState.up { -1.0 } else { 0.0 };
-    player_move_vec.1 += if inputState.down { 1.0 } else { 0.0 };
+    player_move_vec.0 += if input_state.right { 1.0 } else { 0.0 };
+    player_move_vec.0 += if input_state.left { -1.0 } else { 0.0 };
+    player_move_vec.1 += if input_state.up { -1.0 } else { 0.0 };
+    player_move_vec.1 += if input_state.down { 1.0 } else { 0.0 };
 
     let norm = normalize_vector(player_move_vec);
     player.x += norm.0 * player_speed;
     player.y += norm.1 * player_speed;
 
     // make that mob go to player
-    for mob in &mut curState.mobs {
+    for mob in &mut curr_state.mobs {
         let vec_to = (player.x - mob.x, player.y - mob.y);
         if abs_vector(vec_to) <= collision_distance {
             let vec_from = (mob.x - player.x, mob.y - player.y);

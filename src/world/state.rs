@@ -19,6 +19,7 @@ impl Unit {
     /// # Returns
     ///
     /// A new `Unit` instance with given `x` and `y` coordinates.
+    #[allow(dead_code)]
     pub fn new(x: f32, y: f32, x_speed: f32, y_speed: f32) -> Self {
         Self { x: x, y: y, x_speed: x_speed, y_speed: y_speed }
     }
