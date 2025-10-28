@@ -19,7 +19,7 @@ const LOGIC_HEIGHT: usize = 200;
 
 const TILE_SIZE: usize = 16;
 
-const UPSCALE: usize = 7;
+const UPSCALE: usize = 5;
 
 fn main() {
     // parse atlases
