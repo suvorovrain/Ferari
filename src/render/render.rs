@@ -116,7 +116,7 @@ impl Render {
 
         // dynamic objects
         for unit in visible_things {
-            if let Some(frame) = self.entity_atlas.get_frame("player_idle") {
+            if let Some(frame) = self.entity_atlas.get_frame("knight_0_0") {
                 let fw = frame.w as i32;
                 let fh = frame.h as i32;
 
