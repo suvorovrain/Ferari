@@ -57,7 +57,7 @@ fn main() {
     let world_width = game.size[0] as usize * TILE_SIZE * 2;
     let world_height = game.size[1] as usize * TILE_SIZE * 2;
 
-    let mut world_buf: Vec<u32> = vec![195213255; world_width * world_height];
+    let world_buf: Vec<u32> = vec![195213255; world_width * world_height];
     // init render
     let shadow_map: Vec<u8> = vec![0; world_width * world_height];
     let mut render =

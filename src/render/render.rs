@@ -1,6 +1,6 @@
 use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
 use crate::time::Time;
-use crate::world::{Camera, State, Unit};
+use crate::world::{Camera, Unit};
 
 pub struct Render {
     pub entity_atlas: Atlas,
@@ -83,8 +83,8 @@ impl Render {
         let cam_left = (camera.center_x - camera.width as f32 / 2.0).floor() as i32;
         let cam_top = (camera.center_y - camera.height as f32 / 2.0).floor() as i32;
 
-        let cam_right = (camera.center_x as i32 + half_w);
-        let cam_bottom = (camera.center_y as i32 + half_h);
+        let cam_right = camera.center_x as i32 + half_w;
+        let cam_bottom = camera.center_y as i32 + half_h;
 
         // clear buf
         for px in buf.iter_mut() {

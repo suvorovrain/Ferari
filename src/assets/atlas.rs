@@ -48,15 +48,8 @@ struct AtlasJson {
 // ============================
 
 /// Represents a single frame in the atlas.
-///
-/// # Public fields
-///
-/// * `name` - Name identifier of the frame
-/// * `x` - X coordinate of the frame in the atlas image
-/// * `y` - Y coordinate of the frame in the atlas image
-/// * `w` - Width of the frame in pixels
-/// * `h` - Height of the frame in pixels
-#[derive(Debug, Clone)]
+#[allow(dead_code)]
+#[derive(Debug,Clone)]
 pub struct Frame {
     /// Name identifier of the frame
     pub name: String,
@@ -71,6 +64,7 @@ pub struct Frame {
 }
 
 /// Complete atlas containing the image and frame definitions.
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Atlas {
     /// The loaded RGBA image data of the atlas
@@ -154,6 +148,7 @@ impl Atlas {
     /// # Returns
     ///
     /// * `bool` - true if frame exists, false otherwise.
+    #[allow(dead_code)]
     pub fn contains_frame(&self, name: &str) -> bool {
         self.frames.contains_key(name)
     }
@@ -163,6 +158,7 @@ impl Atlas {
     /// # Returns
     ///
     /// * `usize` - The count of frames in the atlas.
+    #[allow(dead_code)]
     pub fn frame_count(&self) -> usize {
         self.frames.len()
     }
@@ -172,6 +168,7 @@ impl Atlas {
     /// # Returns
     ///
     /// * `impl Iterator<Item = &Frame>` - Iterator over frame references.
+    #[allow(dead_code)]
     pub fn iter_frames(&self) -> impl Iterator<Item = &Frame> {
         self.frames.values()
     }
@@ -186,7 +183,6 @@ mod tests {
     use super::*;
 
     // Test atlas JSON parsing on example
-    #[test]
     #[test]
     fn test_load_entities_atlas() {
         let atlas = Atlas::load("assets/tiles/atlas.json").unwrap();

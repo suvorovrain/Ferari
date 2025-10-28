@@ -118,6 +118,7 @@ pub enum BehaviourType {
 }
 
 /// Processed behaviour data for game logic.
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct Behaviour {
     /// Type of behaviour
@@ -129,6 +130,7 @@ pub struct Behaviour {
 }
 
 /// Mob in the game world.
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct Mob {
     /// Unique identifier for the mob
@@ -146,6 +148,7 @@ pub struct Mob {
 }
 
 /// Static object in the game world.
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct Object {
     /// Unique identifier for the object
@@ -163,6 +166,7 @@ pub struct Object {
 }
 
 /// Tile in the game world.
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub struct Tile {
     /// Unique identifier for the tile
@@ -176,7 +180,8 @@ pub struct Tile {
 }
 
 /// Game map, as parsed and ready to use.
-#[derive(Debug, Clone)]
+#[allow(dead_code)]
+#[derive(Debug,Clone)]
 pub struct GameMap {
     /// Name of the map
     pub name: String,
@@ -273,6 +278,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `Option<&Mob>` - Reference to the mob if found, None otherwise.
+    #[allow(dead_code)]
     pub fn get_mob(&self, name: &str) -> Option<&Mob> {
         self.mobs.get(name)
     }
@@ -286,6 +292,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `Option<&Object>` - Reference to the object if found, None otherwise.
+    #[allow(dead_code)]
     pub fn get_object(&self, name: &str) -> Option<&Object> {
         self.objects.get(name)
     }
@@ -299,6 +306,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `Option<&Tile>` - Reference to the tile if found, None otherwise.
+    #[allow(dead_code)]
     pub fn get_tile(&self, name: &str) -> Option<&Tile> {
         self.tiles.get(name)
     }
@@ -308,6 +316,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `usize` - Count of mobs.
+    #[allow(dead_code)]
     pub fn mob_count(&self) -> usize {
         self.mobs.len()
     }
@@ -317,6 +326,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `usize` - Count of objects.
+    #[allow(dead_code)]
     pub fn object_count(&self) -> usize {
         self.objects.len()
     }
@@ -326,6 +336,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `usize` - Count of tiles.
+    #[allow(dead_code)]
     pub fn tile_count(&self) -> usize {
         self.tiles.len()
     }
@@ -344,6 +355,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `impl Iterator<Item = &Object>` - Iterator over object references.
+    #[allow(dead_code)] 
     pub fn iter_objects(&self) -> impl Iterator<Item = &Object> {
         self.objects.values()
     }
@@ -353,6 +365,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `impl Iterator<Item = &Tile>` - Iterator over tile references.
+    #[allow(dead_code)]
     pub fn iter_tiles(&self) -> impl Iterator<Item = &Tile> {
         self.tiles.values()
     }
@@ -364,6 +377,7 @@ impl Mob {
     /// # Returns
     ///
     /// * `(u32, u32)` - Tuple of (x, y) coordinates.
+    #[allow(dead_code)]
     pub fn start_position(&self) -> (u32, u32) {
         (self.x_start, self.y_start)
     }
@@ -375,6 +389,7 @@ impl Object {
     /// # Returns
     ///
     /// * `(u32, u32)` - Tuple of (x, y) coordinates.
+    #[allow(dead_code)]
     pub fn position(&self) -> (u32, u32) {
         (self.x, self.y)
     }
@@ -386,6 +401,7 @@ impl Tile {
     /// # Returns
     ///
     /// * `(u32, u32)` - Tuple of (x, y) coordinates.
+    #[allow(dead_code)] 
     pub fn position(&self) -> (u32, u32) {
         (self.x, self.y)
     }
