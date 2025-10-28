@@ -93,6 +93,17 @@ fn main() {
         //     *px = color;
         // }
 
+        //call initiator
+        let mut visible: Vec<world::Unit> = vec![];
+        visible.push(state.player.clone());
+        // frame render
+        render.render_frame(&visible, &camera, &mut back_buffer);
+
+        // draw frame
+        if tx_frame.try_send(back_buffer.clone()).is_err() {
+            // idle
+        }
+
         // process input
         let input = input_state.read();
         if input.escape {
