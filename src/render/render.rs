@@ -130,41 +130,47 @@ impl Render {
         }
     }
 
-    fn render_unit(&self, frame: &Frame, screen_x: i32, screen_y: i32, buf: &mut [u32], camera: &Camera) {
-    let (atlas_w, atlas_h) = self.entity_atlas.image.dimensions();
+    fn render_unit(
+        &self,
+        frame: &Frame,
+        screen_x: i32,
+        screen_y: i32,
+        buf: &mut [u32],
+        camera: &Camera,
+    ) {
+        let (atlas_w, atlas_h) = self.entity_atlas.image.dimensions();
 
-    for dy in 0..frame.h as i32 {
-        for dx in 0..frame.w as i32 {
-            let src_x = frame.x as i32 + dx;
-            let src_y = frame.y as i32 + dy;
+        for dy in 0..frame.h as i32 {
+            for dx in 0..frame.w as i32 {
+                let src_x = frame.x as i32 + dx;
+                let src_y = frame.y as i32 + dy;
 
-            if src_x < 0 || src_y < 0 || src_x >= atlas_w as i32 || src_y >= atlas_h as i32 {
-                continue;
+                if src_x < 0 || src_y < 0 || src_x >= atlas_w as i32 || src_y >= atlas_h as i32 {
+                    continue;
+                }
+
+                let color = self.entity_atlas.image.get_pixel(src_x as u32, src_y as u32);
+                if color[3] == 0 {
+                    continue;
+                }
+
+                let dest_x = screen_x + dx;
+                let dest_y = screen_y + dy;
+
+                if dest_x < 0
+                    || dest_y < 0
+                    || dest_x >= camera.width as i32
+                    || dest_y >= camera.height as i32
+                {
+                    continue;
+                }
+
+                let dest_idx = (dest_y * camera.width as i32 + dest_x) as usize;
+                let [r, g, b, _] = color.0;
+                buf[dest_idx] = (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
             }
-
-            let color = self.entity_atlas.image.get_pixel(src_x as u32, src_y as u32);
-            if color[3] == 0 {
-                continue;
-            }
-
-            let dest_x = screen_x + dx;
-            let dest_y = screen_y + dy;
-
-            if dest_x < 0
-                || dest_y < 0
-                || dest_x >= camera.width as i32
-                || dest_y >= camera.height as i32
-            {
-                continue;
-            }
-
-            let dest_idx = (dest_y * camera.width as i32 + dest_x) as usize;
-            let [r, g, b, _] = color.0;
-            buf[dest_idx] = (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
         }
     }
-}
-
 
     fn render_title(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
         let (atlas_w, atlas_h) = atlas.image.dimensions();
