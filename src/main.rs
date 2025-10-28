@@ -5,6 +5,8 @@ use std::time::Duration;
 
 use crossbeam_channel::bounded;
 
+use crate::world::make_step;
+
 mod assets;
 mod draw;
 mod input;
@@ -72,6 +74,9 @@ fn main() {
     // init time
     let mut time = time::Time::new();
 
+    // init state of game
+    let mut state = world::State::new(&game);
+
     // prerender
     render.init(&game, &tiles_atlas);
     // game loop
@@ -102,10 +107,7 @@ fn main() {
             running.store(false, Ordering::Release);
         }
 
-        camera.center_x = camera.center_x + (if input.right { 2.5 } else { 0.0 });
-        camera.center_x = camera.center_x + (if input.left { -2.5 } else { 0.0 });
-        camera.center_y = camera.center_y + (if input.up { -2.5 } else { 0.0 });
-        camera.center_y = camera.center_y + (if input.down { 2.5 } else { 0.0 });
+        make_step(&mut state, &input);
 
         // fps limit
         thread::sleep(Duration::from_millis(16)); // ~60 FPS
