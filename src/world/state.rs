@@ -5,7 +5,8 @@ pub struct State {
     pub player: Unit,
     pub mobs: Vec<Unit>,
 }
-#[derive(Debug)]
+#[derive(Debug, Clone)]
+
 pub struct Unit {
     pub x: f32,
     pub y: f32,
