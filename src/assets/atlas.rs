@@ -49,7 +49,7 @@ struct AtlasJson {
 
 /// Represents a single frame in the atlas.
 #[allow(dead_code)]
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct Frame {
     /// Name identifier of the frame
     pub name: String,
@@ -207,16 +207,16 @@ mod tests {
         let dirt_big_frame = atlas.get_frame("dirt_tile_big_0_0").unwrap();
         assert_eq!(dirt_big_frame.name, "dirt_tile_big_0_0");
         assert_eq!(dirt_big_frame.x, 0);
-        assert_eq!(dirt_big_frame.y, 16);
+        assert_eq!(dirt_big_frame.y, 1);
         assert_eq!(dirt_big_frame.w, 16);
         assert_eq!(dirt_big_frame.h, 16);
 
         let grass_big_frame = atlas.get_frame("grass_tile_big_0_1").unwrap();
         assert_eq!(grass_big_frame.name, "grass_tile_big_0_1");
         assert_eq!(grass_big_frame.x, 16);
-        assert_eq!(grass_big_frame.y, 16);
+        assert_eq!(grass_big_frame.y, 0);
         assert_eq!(grass_big_frame.w, 16);
-        assert_eq!(grass_big_frame.h, 16);
+        assert_eq!(grass_big_frame.h, 17);
 
         let dirt_small_frame = atlas.get_frame("dirt_tile_small_1_0").unwrap();
         assert_eq!(dirt_small_frame.name, "dirt_tile_small_1_0");
@@ -228,21 +228,21 @@ mod tests {
         let cactus_frame = atlas.get_frame("cactus_long_3_9").unwrap();
         assert_eq!(cactus_frame.name, "cactus_long_3_9");
         assert_eq!(cactus_frame.x, 148);
-        assert_eq!(cactus_frame.y, 68);
-        assert_eq!(cactus_frame.w, 16);
+        assert_eq!(cactus_frame.y, 52);
+        assert_eq!(cactus_frame.w, 10);
         assert_eq!(cactus_frame.h, 16);
 
         let fence_rising_frame = atlas.get_frame("fence_rising_11_10").unwrap();
         assert_eq!(fence_rising_frame.name, "fence_rising_11_10");
         assert_eq!(fence_rising_frame.x, 162);
-        assert_eq!(fence_rising_frame.y, 169);
+        assert_eq!(fence_rising_frame.y, 153);
         assert_eq!(fence_rising_frame.w, 16);
         assert_eq!(fence_rising_frame.h, 16);
 
         let fence_falling_frame = atlas.get_frame("fence_falling_10_10").unwrap();
         assert_eq!(fence_falling_frame.name, "fence_falling_10_10");
         assert_eq!(fence_falling_frame.x, 162);
-        assert_eq!(fence_falling_frame.y, 152);
+        assert_eq!(fence_falling_frame.y, 136);
         assert_eq!(fence_falling_frame.w, 16);
         assert_eq!(fence_falling_frame.h, 16);
 

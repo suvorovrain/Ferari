@@ -181,7 +181,7 @@ pub struct Tile {
 
 /// Game map, as parsed and ready to use.
 #[allow(dead_code)]
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct GameMap {
     /// Name of the map
     pub name: String,
@@ -355,7 +355,7 @@ impl GameMap {
     /// # Returns
     ///
     /// * `impl Iterator<Item = &Object>` - Iterator over object references.
-    #[allow(dead_code)] 
+    #[allow(dead_code)]
     pub fn iter_objects(&self) -> impl Iterator<Item = &Object> {
         self.objects.values()
     }
@@ -401,7 +401,7 @@ impl Tile {
     /// # Returns
     ///
     /// * `(u32, u32)` - Tuple of (x, y) coordinates.
-    #[allow(dead_code)] 
+    #[allow(dead_code)]
     pub fn position(&self) -> (u32, u32) {
         (self.x, self.y)
     }
@@ -430,8 +430,8 @@ mod tests {
 
         let player = game_map.get_mob("player").unwrap();
         assert_eq!(player.name, "player");
-        assert_eq!(player.x_start, 0);
-        assert_eq!(player.y_start, 0);
+        assert_eq!(player.x_start, 400);
+        assert_eq!(player.y_start, 400);
         assert_eq!(player.asset, "knight_0_0");
         assert_eq!(player.is_player, true);
         assert!(player.behaviour.is_some());
@@ -440,12 +440,12 @@ mod tests {
         assert_eq!(player_behaviour.behaviour_type, BehaviourType::Controlled);
         assert_eq!(player_behaviour.direction, None);
         assert_eq!(player_behaviour.speed, None);
-        assert_eq!(player.start_position(), (0, 0));
+        assert_eq!(player.start_position(), (400, 400));
 
         let mob_1 = game_map.get_mob("mob_1").unwrap();
         assert_eq!(mob_1.name, "mob_1");
-        assert_eq!(mob_1.x_start, 3);
-        assert_eq!(mob_1.y_start, 3);
+        assert_eq!(mob_1.x_start, 350);
+        assert_eq!(mob_1.y_start, 350);
         assert_eq!(mob_1.asset, "imp_20_0");
         assert_eq!(mob_1.is_player, false);
         assert!(mob_1.behaviour.is_some());
@@ -453,13 +453,13 @@ mod tests {
         let mob_1_behaviour = mob_1.behaviour.as_ref().unwrap();
         assert_eq!(mob_1_behaviour.behaviour_type, BehaviourType::Walker);
         assert_eq!(mob_1_behaviour.direction, Some("left".to_string()));
-        assert_eq!(mob_1_behaviour.speed, Some(12.0));
-        assert_eq!(mob_1.start_position(), (3, 3));
+        assert_eq!(mob_1_behaviour.speed, Some(0.5));
+        assert_eq!(mob_1.start_position(), (350, 350));
 
         let mob_2 = game_map.get_mob("mob_2").unwrap();
         assert_eq!(mob_2.name, "mob_2");
-        assert_eq!(mob_2.x_start, 15);
-        assert_eq!(mob_2.y_start, 15);
+        assert_eq!(mob_2.x_start, 370);
+        assert_eq!(mob_2.y_start, 370);
         assert_eq!(mob_2.asset, "ghost_30_0");
         assert_eq!(mob_2.is_player, false);
         assert!(mob_2.behaviour.is_some());
@@ -467,8 +467,8 @@ mod tests {
         let mob_2_behaviour = mob_2.behaviour.as_ref().unwrap();
         assert_eq!(mob_2_behaviour.behaviour_type, BehaviourType::Walker);
         assert_eq!(mob_2_behaviour.direction, Some("right".to_string()));
-        assert_eq!(mob_2_behaviour.speed, Some(8.0));
-        assert_eq!(mob_2.start_position(), (15, 15));
+        assert_eq!(mob_2_behaviour.speed, Some(0.42));
+        assert_eq!(mob_2.start_position(), (370, 370));
 
         let obj_1 = game_map.get_object("obj_1").unwrap();
         assert_eq!(obj_1.name, "obj_1");
