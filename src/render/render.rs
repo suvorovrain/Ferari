@@ -43,7 +43,7 @@ impl Render {
                 let screen_x = (tile.x as i32 - tile.y as i32) * (fw / 2) + offset_x;
                 let screen_y = (tile.x as i32 + tile.y as i32) * (fh / 4) + offset_y - (fh / 2);
 
-                self.render_title(&frame, screen_x, screen_y, &static_atlas);
+                self.render_title(frame, screen_x, screen_y, static_atlas);
             }
         }
 
@@ -60,8 +60,8 @@ impl Render {
                 // isometric projection
                 let screen_x = (object.x as i32 - object.y as i32) * (fw / 2) + offset_x;
                 let screen_y = (object.x as i32 + object.y as i32) * (fh / 4) + offset_y - (fh / 2);
-                self.render_shadow(&frame, screen_x, screen_y, &static_atlas);
-                self.render_object(&frame, screen_x, screen_y, &static_atlas);
+                self.render_shadow(frame, screen_x, screen_y, static_atlas);
+                self.render_object(frame, screen_x, screen_y, static_atlas);
             }
         }
     }
@@ -135,8 +135,8 @@ impl Render {
                     (unit.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
                 let screen_y =
                     (unit.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
-                self.render_shadow_unit(&frame, screen_x, screen_y, buf, camera);
-                self.render_unit(&frame, screen_x, screen_y, buf, camera);
+                self.render_shadow_unit(frame, screen_x, screen_y, buf, camera);
+                self.render_unit(frame, screen_x, screen_y, buf, camera);
             }
         }
     }

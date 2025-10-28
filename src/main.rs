@@ -109,7 +109,7 @@ fn main() {
 
         let units_for_render = get_visible_objects(&state, &camera);
 
-        if units_for_render.len() == 0 {
+        if units_for_render.is_empty() {
             continue;
         }
 
