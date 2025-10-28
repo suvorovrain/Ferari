@@ -56,10 +56,11 @@ impl Render {
         let half_w = camera.width as i32 / 2;
         let half_h = camera.height as i32 / 2;
 
-        let cam_left = (camera.center_x as i32 - half_w).max(0);
-        let cam_top = (camera.center_y as i32 - half_h).max(0);
-        let cam_right = (camera.center_x as i32 + half_w).min(world_w);
-        let cam_bottom = (camera.center_y as i32 + half_h).min(world_h);
+        let cam_left = (camera.center_x - camera.width as f32 / 2.0).floor() as i32;
+        let cam_top = (camera.center_y - camera.height as f32 / 2.0).floor() as i32;
+
+        let cam_right = (camera.center_x as i32 + half_w);
+        let cam_bottom = (camera.center_y as i32 + half_h);
 
         // clear buf
         for px in buf.iter_mut() {
