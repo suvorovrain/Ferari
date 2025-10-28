@@ -104,7 +104,6 @@ fn main() {
 
         make_step(&mut state, &input);
 
-        println!("player ({}, {})", state.player.x, state.player.y);
         camera.center_x = state.player.x;
         camera.center_y = state.player.y;
 
