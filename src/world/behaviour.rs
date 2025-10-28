@@ -1,12 +1,10 @@
-use std::vec;
-
 use crate::input::InputSnapshot;
 
 use super::State;
 
 fn abs_vector(vec: (f32, f32)) -> f32 {
     let (dx, dy) = vec;
-    return (dx * dx + dy * dy).sqrt();
+    (dx * dx + dy * dy).sqrt()
 }
 
 fn normalize_vector(vec: (f32, f32)) -> (f32, f32) {
