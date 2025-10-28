@@ -29,7 +29,6 @@ impl Render {
     pub fn init(&mut self, game: &GameMap, static_atlas: &Atlas) {
         let mut tiles: Vec<Tile> = (*game).clone().tiles.into_values().collect();
         tiles.sort_by(|a, b| (a.x + a.y).cmp(&(b.x + b.y)));
-
         // base screen offsets
         let offset_x = self.world_width as i32 / 2;
         let offset_y = (self.world_height as i32 / 2) - (static_atlas.tile_size as i32);
@@ -124,7 +123,7 @@ impl Render {
                     (unit.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
                 let screen_y =
                     (unit.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
-
+                self.render_shadow_unit(&frame, screen_x, screen_y, buf, camera);
                 self.render_unit(&frame, screen_x, screen_y, buf, camera);
             }
         }
@@ -166,8 +165,27 @@ impl Render {
                 }
 
                 let dest_idx = (dest_y * camera.width as i32 + dest_x) as usize;
+
+                let world_x = (camera.center_x as i32 - camera.width as i32 / 2) + dest_x;
+                let world_y = (camera.center_y as i32 - camera.height as i32 / 2) + dest_y;
+                let mut brightness = 1.0;
+
+                if world_x >= 0
+                    && world_y >= 0
+                    && world_x < self.world_width as i32
+                    && world_y < self.world_height as i32
+                {
+                    let shadow_idx = (world_y * self.world_width as i32 + world_x) as usize;
+                    let shadow_val = self.shadow_map[shadow_idx] as f32 / 255.0;
+                    brightness = 1.0 - 0.6 * shadow_val;
+                }
+
                 let [r, g, b, _] = color.0;
-                buf[dest_idx] = (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
+                let r = (r as f32 * brightness) as u32;
+                let g = (g as f32 * brightness) as u32;
+                let b = (b as f32 * brightness) as u32;
+
+                buf[dest_idx] = (0xFF << 24) | (r << 16) | (g << 8) | b;
             }
         }
     }
@@ -278,12 +296,62 @@ impl Render {
 
                 let dest_index = (dest_y * self.world_width as i32 + dest_x) as usize;
                 let dst = self.world_buf[dest_index];
+                self.shadow_map[dest_index] = self.shadow_map[dest_index].saturating_add(64);
 
                 let r = ((dst >> 16) & 0xFF) as f32 * 0.5;
                 let g = ((dst >> 8) & 0xFF) as f32 * 0.5;
                 let b = (dst & 0xFF) as f32 * 0.5;
                 self.world_buf[dest_index] =
                     (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
+            }
+        }
+    }
+    fn render_shadow_unit(
+        &self,
+        frame: &Frame,
+        screen_x: i32,
+        screen_y: i32,
+        buf: &mut [u32],
+        camera: &Camera,
+    ) {
+        let (atlas_w, atlas_h) = self.entity_atlas.image.dimensions();
+
+        let light_dir_x = 1.0;
+        let light_dir_y = 0.5;
+        let shadow_scale = 0.5;
+
+        for dy in 0..frame.h as i32 {
+            for dx in 0..frame.w as i32 {
+                let src_x = frame.x as i32 + dx;
+                let src_y = frame.y as i32 + dy;
+                if src_x < 0 || src_y < 0 || src_x >= atlas_w as i32 || src_y >= atlas_h as i32 {
+                    continue;
+                }
+
+                let color = self.entity_atlas.image.get_pixel(src_x as u32, src_y as u32);
+                if color[3] == 0 {
+                    continue;
+                }
+
+                let height_factor = (frame.h as f32 - dy as f32) * shadow_scale;
+                let dest_x = screen_x + dx + (light_dir_x * height_factor) as i32;
+                let dest_y = screen_y + dy + (light_dir_y * height_factor) as i32;
+
+                if dest_x < 0
+                    || dest_y < 0
+                    || dest_x >= camera.width as i32
+                    || dest_y >= camera.height as i32
+                {
+                    continue;
+                }
+
+                let dest_idx = (dest_y * camera.width as i32 + dest_x) as usize;
+                let dst = buf[dest_idx];
+
+                let r = ((dst >> 16) & 0xFF) as f32 * 0.5;
+                let g = ((dst >> 8) & 0xFF) as f32 * 0.5;
+                let b = (dst & 0xFF) as f32 * 0.5;
+                buf[dest_idx] = (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
             }
         }
     }
