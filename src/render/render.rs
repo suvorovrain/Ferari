@@ -1,5 +1,5 @@
-use crate::assets::{Atlas, GameMap, Tile, Frame};
-use crate::world::State;
+use crate::assets::{Atlas, Frame, GameMap, Tile};
+use crate::world::{Camera, State};
 
 pub struct Render {
     pub entity_atlas: Atlas,
@@ -41,15 +41,62 @@ impl Render {
 
                 // isometric projection
                 let screen_x = (tile.x as i32 - tile.y as i32) * (fw / 2) + offset_x;
-                let screen_y =
-                    (tile.x as i32 + tile.y as i32) * (fh / 4) + offset_y - (fh / 2);
+                let screen_y = (tile.x as i32 + tile.y as i32) * (fh / 4) + offset_y - (fh / 2);
 
-                self.draw_tile(&frame, screen_x, screen_y, &static_atlas);
+                self.render_title(&frame, screen_x, screen_y, &static_atlas);
+            }
+        }
+    }
+    pub fn render_frame(&mut self, camera: &Camera, buf: &mut [u32]) {
+        // TODO: ADD STATE HANDLING
+        let world_w = self.world_width as i32;
+        let world_h = self.world_height as i32;
+
+        // left-top
+        let half_w = camera.width as i32 / 2;
+        let half_h = camera.height as i32 / 2;
+
+        let cam_left = (camera.center_x as i32 - half_w).max(0);
+        let cam_top = (camera.center_y as i32 - half_h).max(0);
+        let cam_right = (camera.center_x as i32 + half_w).min(world_w);
+        let cam_bottom = (camera.center_y as i32 + half_h).min(world_h);
+
+        // clear buf
+        for px in buf.iter_mut() {
+            *px = 0;
+        }
+
+        let view_w = (cam_right - cam_left) as usize;
+        let view_h = (cam_bottom - cam_top) as usize;
+
+        // assert sizes
+        assert_eq!(
+            buf.len(),
+            (camera.width as usize) * (camera.height as usize),
+            "Buffer size must match camera viewport"
+        );
+
+        // copy visible world
+        for y in 0..view_h {
+            let world_y = cam_top + y as i32;
+            if world_y < 0 || world_y >= world_h {
+                continue;
+            }
+
+            for x in 0..view_w {
+                let world_x = cam_left + x as i32;
+                if world_x < 0 || world_x >= world_w {
+                    continue;
+                }
+
+                let world_idx = (world_y * world_w + world_x) as usize;
+                let buf_idx = y * camera.width as usize + x;
+                buf[buf_idx] = self.world_buf[world_idx];
             }
         }
     }
 
-    fn draw_tile(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
+    fn render_title(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
         let (atlas_w, atlas_h) = atlas.image.dimensions();
 
         for dy in 0..frame.h as i32 {
