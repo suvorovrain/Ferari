@@ -93,16 +93,7 @@ fn main() {
         //     *px = color;
         // }
 
-        //call initiator
-        let mut visible: Vec<world::Unit> = vec![];
-        visible.push(state.player.clone());
-        // frame render
-        render.render_frame(&visible, &camera, &mut back_buffer);
-
-        // draw frame
-        if tx_frame.try_send(back_buffer.clone()).is_err() {
-            // idle
-        }
+        
 
         // process input
         let input = input_state.read();
@@ -115,6 +106,7 @@ fn main() {
         camera.center_x = state.player.x;
         camera.center_y = state.player.y;
 
+        //call initiator
         let units_for_render = get_visible_objects(&state, &camera);
 
         if units_for_render.len() == 0 {
@@ -122,11 +114,11 @@ fn main() {
         }
 
         // frame render
-        render.render_frame(&camera, &mut back_buffer);
+        render.render_frame(&units_for_render,&camera, &mut back_buffer);
 
         // draw frame
         if tx_frame.try_send(back_buffer.clone()).is_err() {
-            // draw thread busy — пропускаем кадр
+            // idle
         }
 
         // fps limit
