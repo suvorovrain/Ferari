@@ -73,7 +73,7 @@ fn main() {
     let mut time = time::Time::new();
 
     // prerender
-    render.init(game, tiles_atlas);
+    render.init(&game, &tiles_atlas);
     // game loop
     while running.load(Ordering::Acquire) {
         time.update();
@@ -102,10 +102,10 @@ fn main() {
             running.store(false, Ordering::Release);
         }
 
-        camera.center_x = camera.center_x + (if input.right { 0.5 } else { 0.0 });
-        camera.center_x = camera.center_x + (if input.left { -0.5 } else { 0.0 });
-        camera.center_y = camera.center_y + (if input.up { -0.5 } else { 0.0 });
-        camera.center_y = camera.center_y + (if input.down { 0.5 } else { 0.0 });
+        camera.center_x = camera.center_x + (if input.right { 2.5 } else { 0.0 });
+        camera.center_x = camera.center_x + (if input.left { -2.5 } else { 0.0 });
+        camera.center_y = camera.center_y + (if input.up { -2.5 } else { 0.0 });
+        camera.center_y = camera.center_y + (if input.down { 2.5 } else { 0.0 });
 
         // fps limit
         thread::sleep(Duration::from_millis(16)); // ~60 FPS
