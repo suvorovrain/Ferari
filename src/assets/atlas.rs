@@ -11,44 +11,35 @@ use std::path::{Path, PathBuf};
 // ============================
 
 /// Frame definition from JSON atlas data.
-///
-/// # Public fields
-///
-/// * `x` - X coordinate of the frame in the atlas image
-/// * `y` - Y coordinate of the frame in the atlas image
-/// * `w` - Width of the frame in pixels
-/// * `h` - Height of the frame in pixels
 #[derive(Deserialize, Debug)]
 struct JsonFrame {
+    /// X coordinate of the frame in the atlas image
     pub x: u32,
+    /// Y coordinate of the frame in the atlas image
     pub y: u32,
+    /// Width of the frame in pixels
     pub w: u32,
+    /// Height of the frame in pixels
     pub h: u32,
 }
 
 /// Meta information about the atlas from JSON.
-///
-/// # Public fields
-///
-/// * `image` - Path to the atlas image file
-/// * `tile_size` - Size of tiles in the atlas
-/// * `version` - Version of the atlas format
 #[derive(Deserialize, Debug)]
 struct Meta {
+    /// Path to the atlas image file
     pub image: String,
+    /// Size of tiles in the atlas
     pub tile_size: u32,
+    /// Version of the atlas format
     pub version: u32,
 }
 
 /// Complete parsed JSON atlas data structure.
-///
-/// # Public fields
-///
-/// * `frames` - Mapping of frame names to their definitions
-/// * `meta` - Meta information about the atlas
 #[derive(Deserialize, Debug)]
 struct AtlasJson {
+    /// Mapping of frame names to their definitions
     pub frames: HashMap<String, JsonFrame>,
+    /// Meta information about the atlas
     pub meta: Meta,
 }
 
@@ -57,36 +48,30 @@ struct AtlasJson {
 // ============================
 
 /// Represents a single frame in the atlas.
-///
-/// # Public fields
-///
-/// * `name` - Name identifier of the frame
-/// * `x` - X coordinate of the frame in the atlas image
-/// * `y` - Y coordinate of the frame in the atlas image
-/// * `w` - Width of the frame in pixels
-/// * `h` - Height of the frame in pixels
 #[derive(Debug)]
 pub struct Frame {
+    /// Name identifier of the frame
     pub name: String,
+    /// X coordinate of the frame in the atlas image
     pub x: u32,
+    /// Y coordinate of the frame in the atlas image
     pub y: u32,
+    /// Width of the frame in pixels
     pub w: u32,
+    /// Height of the frame in pixels
     pub h: u32,
 }
 
 /// Complete atlas containing the image and frame definitions.
-///
-/// # Public fields
-///
-/// * `image` - The loaded RGBA image data of the atlas
-/// * `frames` - Mapping of frame names to frame definitions
-/// * `tile_size` - Size of tiles in the atlas
-/// * `version` - Version of the atlas
 #[derive(Debug)]
 pub struct Atlas {
+    /// The loaded RGBA image data of the atlas
     pub image: RgbaImage,
+    /// Mapping of frame names to frame definitions
     pub frames: HashMap<String, Frame>,
+    /// Size of tiles in the atlas
     pub tile_size: u32,
+    /// Version of the atlas
     pub version: u32,
 }
 
