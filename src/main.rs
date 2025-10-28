@@ -5,7 +5,11 @@ use std::time::Duration;
 
 use crossbeam_channel::bounded;
 
+<<<<<<< HEAD
 use crate::world::{get_visible_objects, make_step};
+=======
+use crate::world::make_step;
+>>>>>>> 7e87bcd (Feat: now game has state that change upon time)
 
 mod assets;
 mod draw;
