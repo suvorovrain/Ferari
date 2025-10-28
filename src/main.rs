@@ -78,7 +78,7 @@ fn main() {
     let mut state = world::State::new(&game);
 
     // prerender
-    render.init(game, tiles_atlas);
+    render.init(&game, &tiles_atlas);
     // game loop
     while running.load(Ordering::Acquire) {
         time.update();

@@ -1,8 +1,6 @@
 mod atlas;
 mod gamemap;
 
-pub use atlas::Atlas;
-pub use atlas::Frame;
-pub use gamemap::GameMap;
-pub use gamemap::Tile;
+pub use atlas::{Atlas,Frame};
+pub use gamemap::{GameMap,Tile,Object};
 
