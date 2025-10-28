@@ -1,4 +1,5 @@
 use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
+use crate::time::Time;
 use crate::world::{Camera, State, Unit};
 
 pub struct Render {
@@ -64,7 +65,13 @@ impl Render {
             }
         }
     }
-    pub fn render_frame(&mut self, visible_things: &Vec<Unit>, camera: &Camera, buf: &mut [u32]) {
+    pub fn render_frame(
+        &mut self,
+        visible_things: &Vec<Unit>,
+        camera: &Camera,
+        buf: &mut [u32],
+        time: &Time,
+    ) {
         // TODO: ADD STATE HANDLING
         let world_w = self.world_width as i32;
         let world_h = self.world_height as i32;
@@ -114,8 +121,13 @@ impl Render {
         }
 
         // dynamic objects
-        for unit in visible_things {
-            if let Some(frame) = self.entity_atlas.get_frame("knight_0_0") {
+        for (i, unit) in visible_things.iter().enumerate() {
+            let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+            let period = 0.4;
+            let cycles = (time.total / period).floor() as u32;
+            let animation_num = if cycles % 2 == 0 { "_0" } else { "_1" };
+            let full_name = name_model.to_string() + animation_num;
+            if let Some(frame) = self.entity_atlas.get_frame(&full_name) {
                 let fw = frame.w as i32;
                 let fh = frame.h as i32;
 
