@@ -185,28 +185,75 @@ mod tests {
         assert_eq!(atlas.tile_size, 16);
         assert_eq!(atlas.version, 1);
 
-        assert_eq!(atlas.frame_count(), 2);
+        assert_eq!(atlas.frame_count(), 12);
 
         assert!(atlas.contains_frame("knight_0_0"));
+        assert!(atlas.contains_frame("knight_0_1"));
+        assert!(atlas.contains_frame("knight_1_0"));
+        assert!(atlas.contains_frame("knight_1_1"));
         assert!(atlas.contains_frame("imp_20_0"));
+        assert!(atlas.contains_frame("imp_20_1"));
+        assert!(atlas.contains_frame("imp_21_0"));
+        assert!(atlas.contains_frame("imp_21_1"));
+        assert!(atlas.contains_frame("ghost_30_0"));
+        assert!(atlas.contains_frame("ghost_30_1"));
+        assert!(atlas.contains_frame("ghost_31_0"));
+        assert!(atlas.contains_frame("ghost_31_1"));
 
         let knight_frame = atlas.get_frame("knight_0_0").unwrap();
         assert_eq!(knight_frame.name, "knight_0_0");
         assert_eq!(knight_frame.x, 4);
-        assert_eq!(knight_frame.y, 14);
-        assert_eq!(knight_frame.w, 10);
-        assert_eq!(knight_frame.h, 10);
+        assert_eq!(knight_frame.y, 12);
+        assert_eq!(knight_frame.w, 8);
+        assert_eq!(knight_frame.h, 8);
+
+        let knight_frame_1 = atlas.get_frame("knight_0_1").unwrap();
+        assert_eq!(knight_frame_1.name, "knight_0_1");
+        assert_eq!(knight_frame_1.x, 20);
+        assert_eq!(knight_frame_1.y, 12);
+        assert_eq!(knight_frame_1.w, 8);
+        assert_eq!(knight_frame_1.h, 9);
 
         let imp_frame = atlas.get_frame("imp_20_0").unwrap();
         assert_eq!(imp_frame.name, "imp_20_0");
         assert_eq!(imp_frame.x, 5);
-        assert_eq!(imp_frame.y, 354);
-        assert_eq!(imp_frame.w, 10);
-        assert_eq!(imp_frame.h, 10);
+        assert_eq!(imp_frame.y, 352);
+        assert_eq!(imp_frame.w, 8);
+        assert_eq!(imp_frame.h, 8);
+
+        let ghost_frame = atlas.get_frame("ghost_30_0").unwrap();
+        assert_eq!(ghost_frame.name, "ghost_30_0");
+        assert_eq!(ghost_frame.x, 6);
+        assert_eq!(ghost_frame.y, 520);
+        assert_eq!(ghost_frame.w, 4);
+        assert_eq!(ghost_frame.h, 7);
+
+        let ghost_frame_1 = atlas.get_frame("ghost_31_1").unwrap();
+        assert_eq!(ghost_frame_1.name, "ghost_31_1");
+        assert_eq!(ghost_frame_1.x, 23);
+        assert_eq!(ghost_frame_1.y, 537);
+        assert_eq!(ghost_frame_1.w, 8);
+        assert_eq!(ghost_frame_1.h, 9);
 
         let mut frame_names: Vec<String> = atlas.iter_frames().map(|f| f.name.clone()).collect();
         frame_names.sort();
-        assert_eq!(frame_names, vec!["imp_20_0", "knight_0_0"]);
+        assert_eq!(
+            frame_names,
+            vec![
+                "ghost_30_0",
+                "ghost_30_1",
+                "ghost_31_0",
+                "ghost_31_1",
+                "imp_20_0",
+                "imp_20_1",
+                "imp_21_0",
+                "imp_21_1",
+                "knight_0_0",
+                "knight_0_1",
+                "knight_1_0",
+                "knight_1_1"
+            ]
+        );
 
         assert!(!atlas.image.is_empty());
     }
