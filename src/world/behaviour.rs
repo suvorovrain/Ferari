@@ -13,11 +13,11 @@ fn normalize_vector(dx: f32, dy: f32) -> (f32, f32) {
 
 pub fn make_step(curState: &mut State, inputState: &InputSnapshot) {
     let player = &mut curState.player;
-    let player_speed = 0.2;
+    let player_speed = 2.;
     player.x += if inputState.right { player_speed } else { 0.0 };
     player.x += if inputState.left { -player_speed } else { 0.0 };
-    player.y += if inputState.up { player_speed } else { 0.0 };
-    player.y += if inputState.down { -player_speed } else { 0.0 };
+    player.y += if inputState.up { -player_speed } else { 0.0 };
+    player.y += if inputState.down { player_speed } else { 0.0 };
 
     // make that mob go to player
     for mob in &mut curState.mobs {

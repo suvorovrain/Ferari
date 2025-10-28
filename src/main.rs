@@ -79,6 +79,9 @@ fn main() {
 
     // prerender
     render.init(&game, &tiles_atlas);
+    render.render_frame(&Vec::new(), &camera, &mut back_buffer);
+    state.player.x = camera.center_x;
+    state.player.y = camera.center_y;
     // game loop
     while running.load(Ordering::Acquire) {
         time.update();
@@ -93,8 +96,6 @@ fn main() {
         //     *px = color;
         // }
 
-        
-
         // process input
         let input = input_state.read();
         if input.escape {
@@ -103,10 +104,10 @@ fn main() {
 
         make_step(&mut state, &input);
 
+        println!("player ({}, {})", state.player.x, state.player.y);
         camera.center_x = state.player.x;
         camera.center_y = state.player.y;
 
-        //call initiator
         let units_for_render = get_visible_objects(&state, &camera);
 
         if units_for_render.len() == 0 {
@@ -114,7 +115,7 @@ fn main() {
         }
 
         // frame render
-        render.render_frame(&units_for_render,&camera, &mut back_buffer);
+        render.render_frame(&units_for_render, &camera, &mut back_buffer);
 
         // draw frame
         if tx_frame.try_send(back_buffer.clone()).is_err() {
