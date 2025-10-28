@@ -653,8 +653,8 @@
 
   "mobs": {
     "player": {
-      "x_start": 0,
-      "y_start": 0,
+      "x_start": 400,
+      "y_start": 400,
       "asset": "knight_0_0",
       "is_player": true,
       "behaviour": {
@@ -662,25 +662,25 @@
       }
     },
     "mob_1": {
-      "x_start": 3,
-      "y_start": 3,
+      "x_start": 350,
+      "y_start": 350,
       "asset": "imp_20_0",
       "is_player": false,
       "behaviour": {
         "type": "walker",
         "direction": "left",
-        "speed": 12
+        "speed": 0.5
       }
     },
     "mob_2": {
-      "x_start": 15,
-      "y_start": 15,
+      "x_start": 370,
+      "y_start": 370,
       "asset": "ghost_30_0",
       "is_player": false,
       "behaviour": {
         "type": "walker",
         "direction": "right",
-        "speed": 8
+        "speed": 0.42
       }
     }
   }
