@@ -179,79 +179,85 @@ mod tests {
 
     // Test atlas JSON parsing on example
     #[test]
+    #[test]
     fn test_load_entities_atlas() {
-        let atlas = Atlas::load("assets/entities/atlas.json").unwrap();
+        let atlas = Atlas::load("assets/tiles/atlas.json").unwrap();
 
         assert_eq!(atlas.tile_size, 16);
         assert_eq!(atlas.version, 1);
 
-        assert_eq!(atlas.frame_count(), 12);
+        assert_eq!(atlas.frame_count(), 11);
 
-        assert!(atlas.contains_frame("knight_0_0"));
-        assert!(atlas.contains_frame("knight_0_1"));
-        assert!(atlas.contains_frame("knight_1_0"));
-        assert!(atlas.contains_frame("knight_1_1"));
-        assert!(atlas.contains_frame("imp_20_0"));
-        assert!(atlas.contains_frame("imp_20_1"));
-        assert!(atlas.contains_frame("imp_21_0"));
-        assert!(atlas.contains_frame("imp_21_1"));
-        assert!(atlas.contains_frame("ghost_30_0"));
-        assert!(atlas.contains_frame("ghost_30_1"));
-        assert!(atlas.contains_frame("ghost_31_0"));
-        assert!(atlas.contains_frame("ghost_31_1"));
+        assert!(atlas.contains_frame("dirt_tile_big_0_0"));
+        assert!(atlas.contains_frame("grass_tile_big_0_1"));
+        assert!(atlas.contains_frame("rock_tile_big_0_2"));
+        assert!(atlas.contains_frame("sand_tile_big_0_3"));
+        assert!(atlas.contains_frame("dirt_tile_small_1_0"));
+        assert!(atlas.contains_frame("grass_tile_small_1_1"));
+        assert!(atlas.contains_frame("rock_tile_small_1_2"));
+        assert!(atlas.contains_frame("sand_tile_small_1_3"));
+        assert!(atlas.contains_frame("cactus_long_3_9"));
+        assert!(atlas.contains_frame("fence_rising_11_10"));
+        assert!(atlas.contains_frame("fence_falling_10_10"));
 
-        let knight_frame = atlas.get_frame("knight_0_0").unwrap();
-        assert_eq!(knight_frame.name, "knight_0_0");
-        assert_eq!(knight_frame.x, 4);
-        assert_eq!(knight_frame.y, 12);
-        assert_eq!(knight_frame.w, 8);
-        assert_eq!(knight_frame.h, 8);
+        let dirt_big_frame = atlas.get_frame("dirt_tile_big_0_0").unwrap();
+        assert_eq!(dirt_big_frame.name, "dirt_tile_big_0_0");
+        assert_eq!(dirt_big_frame.x, 0);
+        assert_eq!(dirt_big_frame.y, 16);
+        assert_eq!(dirt_big_frame.w, 16);
+        assert_eq!(dirt_big_frame.h, 16);
 
-        let knight_frame_1 = atlas.get_frame("knight_0_1").unwrap();
-        assert_eq!(knight_frame_1.name, "knight_0_1");
-        assert_eq!(knight_frame_1.x, 20);
-        assert_eq!(knight_frame_1.y, 12);
-        assert_eq!(knight_frame_1.w, 8);
-        assert_eq!(knight_frame_1.h, 9);
+        let grass_big_frame = atlas.get_frame("grass_tile_big_0_1").unwrap();
+        assert_eq!(grass_big_frame.name, "grass_tile_big_0_1");
+        assert_eq!(grass_big_frame.x, 16);
+        assert_eq!(grass_big_frame.y, 16);
+        assert_eq!(grass_big_frame.w, 16);
+        assert_eq!(grass_big_frame.h, 16);
 
-        let imp_frame = atlas.get_frame("imp_20_0").unwrap();
-        assert_eq!(imp_frame.name, "imp_20_0");
-        assert_eq!(imp_frame.x, 5);
-        assert_eq!(imp_frame.y, 352);
-        assert_eq!(imp_frame.w, 8);
-        assert_eq!(imp_frame.h, 8);
+        let dirt_small_frame = atlas.get_frame("dirt_tile_small_1_0").unwrap();
+        assert_eq!(dirt_small_frame.name, "dirt_tile_small_1_0");
+        assert_eq!(dirt_small_frame.x, 0);
+        assert_eq!(dirt_small_frame.y, 33);
+        assert_eq!(dirt_small_frame.w, 16);
+        assert_eq!(dirt_small_frame.h, 16);
 
-        let ghost_frame = atlas.get_frame("ghost_30_0").unwrap();
-        assert_eq!(ghost_frame.name, "ghost_30_0");
-        assert_eq!(ghost_frame.x, 6);
-        assert_eq!(ghost_frame.y, 520);
-        assert_eq!(ghost_frame.w, 4);
-        assert_eq!(ghost_frame.h, 7);
+        let cactus_frame = atlas.get_frame("cactus_long_3_9").unwrap();
+        assert_eq!(cactus_frame.name, "cactus_long_3_9");
+        assert_eq!(cactus_frame.x, 148);
+        assert_eq!(cactus_frame.y, 68);
+        assert_eq!(cactus_frame.w, 16);
+        assert_eq!(cactus_frame.h, 16);
 
-        let ghost_frame_1 = atlas.get_frame("ghost_31_1").unwrap();
-        assert_eq!(ghost_frame_1.name, "ghost_31_1");
-        assert_eq!(ghost_frame_1.x, 23);
-        assert_eq!(ghost_frame_1.y, 537);
-        assert_eq!(ghost_frame_1.w, 8);
-        assert_eq!(ghost_frame_1.h, 9);
+        let fence_rising_frame = atlas.get_frame("fence_rising_11_10").unwrap();
+        assert_eq!(fence_rising_frame.name, "fence_rising_11_10");
+        assert_eq!(fence_rising_frame.x, 162);
+        assert_eq!(fence_rising_frame.y, 169);
+        assert_eq!(fence_rising_frame.w, 16);
+        assert_eq!(fence_rising_frame.h, 16);
+
+        let fence_falling_frame = atlas.get_frame("fence_falling_10_10").unwrap();
+        assert_eq!(fence_falling_frame.name, "fence_falling_10_10");
+        assert_eq!(fence_falling_frame.x, 162);
+        assert_eq!(fence_falling_frame.y, 152);
+        assert_eq!(fence_falling_frame.w, 16);
+        assert_eq!(fence_falling_frame.h, 16);
 
         let mut frame_names: Vec<String> = atlas.iter_frames().map(|f| f.name.clone()).collect();
         frame_names.sort();
         assert_eq!(
             frame_names,
             vec![
-                "ghost_30_0",
-                "ghost_30_1",
-                "ghost_31_0",
-                "ghost_31_1",
-                "imp_20_0",
-                "imp_20_1",
-                "imp_21_0",
-                "imp_21_1",
-                "knight_0_0",
-                "knight_0_1",
-                "knight_1_0",
-                "knight_1_1"
+                "cactus_long_3_9",
+                "dirt_tile_big_0_0",
+                "dirt_tile_small_1_0",
+                "fence_falling_10_10",
+                "fence_rising_11_10",
+                "grass_tile_big_0_1",
+                "grass_tile_small_1_1",
+                "rock_tile_big_0_2",
+                "rock_tile_small_1_2",
+                "sand_tile_big_0_3",
+                "sand_tile_small_1_3"
             ]
         );
 
