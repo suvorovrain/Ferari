@@ -52,7 +52,8 @@ fn main() {
 
     // init Time
     let mut time = time::Time::new();
-
+    // prerender
+    // world_buf
     while running.load(Ordering::Acquire) {
         time.update();
 
@@ -73,6 +74,10 @@ fn main() {
 
         // read input state (from draw thread)
         let input = input_state.read();
+        // behaviour::move(&player)
+        // state 
+        // if init
+        //      render
         if input.escape {
             running.store(false, Ordering::Release);
         }
