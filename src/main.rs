@@ -14,11 +14,13 @@ mod render;
 mod time;
 mod world;
 
+/// Logical screen width in pixels.
 const LOGIC_WIDTH: usize = 200;
+/// Logical screen height in pixels.
 const LOGIC_HEIGHT: usize = 200;
-
+/// Tile size in pixels.
 const TILE_SIZE: usize = 16;
-
+/// Upscaling factor for display.
 const UPSCALE: usize = 5;
 
 fn main() {
