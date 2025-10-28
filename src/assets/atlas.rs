@@ -56,7 +56,7 @@ struct AtlasJson {
 /// * `y` - Y coordinate of the frame in the atlas image
 /// * `w` - Width of the frame in pixels
 /// * `h` - Height of the frame in pixels
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct Frame {
     /// Name identifier of the frame
     pub name: String,
