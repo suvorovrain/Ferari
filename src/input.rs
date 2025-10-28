@@ -7,39 +7,33 @@ use std::sync::{
 /// A snapshot of the input state at a specific moment in time.
 ///
 /// This struct provides a view of all tracked key states.
-///
-/// # Public fields
-///
-/// * `up` - Indicates if the W key (up movement) was pressed when the snapshot was taken
-/// * `left` - Indicates if the A key (left movement) was pressed when the snapshot was taken
-/// * `down` - Indicates if the S key (down movement) was pressed when the snapshot was taken
-/// * `right` - Indicates if the D key (right movement) was pressed when the snapshot was taken
-/// * `escape` - Indicates if the Escape key was pressed when the snapshot was taken
 pub struct InputSnapshot {
+    /// Indicates if the W key (up movement) was pressed when the snapshot was taken
     pub up: bool,
+    /// Indicates if the A key (left movement) was pressed when the snapshot was taken
     pub left: bool,
+    /// Indicates if the S key (down movement) was pressed when the snapshot was taken
     pub down: bool,
+    /// Indicates if the D key (right movement) was pressed when the snapshot was taken
     pub right: bool,
+    /// Indicates if the Escape key was pressed when the snapshot was taken
     pub escape: bool,
 }
 
 /// Represents the current state of input keys.
 ///
 /// This struct provides a way to track the state of specific keyboard keys (W, A, S, D, Escape).
-///
-/// # Public fields
-///
-/// * `up` - Tracks whether the W key (up movement) is currently pressed
-/// * `left` - Tracks whether the A key (left movement) is currently pressed
-/// * `down` - Tracks whether the S key (down movement) is currently pressed
-/// * `right` - Tracks whether the D key (right movement) is currently pressed
-/// * `escape` - Tracks whether the Escape key is currently pressed
 #[derive(Clone)]
 pub struct InputState {
+    /// Tracks whether the W key (up movement) is currently pressed
     pub up: Arc<AtomicBool>,
+    /// Tracks whether the A key (left movement) is currently pressed
     pub left: Arc<AtomicBool>,
+    /// Tracks whether the S key (down movement) is currently pressed
     pub down: Arc<AtomicBool>,
+    /// Tracks whether the D key (right movement) is currently pressed
     pub right: Arc<AtomicBool>,
+    /// Tracks whether the Escape key is currently pressed
     pub escape: Arc<AtomicBool>,
 }
 

@@ -3,17 +3,14 @@
 /// The camera is defined by its center position and viewport dimensions.
 /// It can be used to determine which points or objects are visible within
 /// the camera's current view.
-///
-/// # Public fields
-///
-/// * `center_x` - The x-coordinate of the camera's center position in world space
-/// * `center_y` - The y-coordinate of the camera's center position in world space
-/// * `width` - The width of the camera's viewport in pixels
-/// * `height` - The height of the camera's viewport in pixels
 pub struct Camera {
+    /// The x-coordinate of the camera's center position in world space
     pub center_x: f32,
+    /// The y-coordinate of the camera's center position in world space
     pub center_y: f32,
+    /// The width of the camera's viewport in pixels
     pub width: u16,
+    /// The height of the camera's viewport in pixels
     pub height: u16,
 }
 

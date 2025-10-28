@@ -10,113 +10,95 @@ use std::path::Path;
 // ============================
 
 /// Behaviour data from JSON.
-///
-/// # Public fields
-///
-/// * `behaviour_type` - Type of behaviour
-/// * `direction` - Direction for the behaviour
-/// * `speed` - Speed value for the behaviour
 #[derive(Deserialize, Debug, Clone)]
 pub struct BehaviourJson {
+    /// Type of behaviour
     #[serde(rename = "type")]
     pub behaviour_type: String,
 
+    /// Direction for the behaviour
     #[serde(default)]
     pub direction: Option<String>,
 
+    /// Speed value for the behaviour
     #[serde(default)]
     pub speed: Option<f32>,
 }
 
 /// Mob data from JSON.
-///
-/// # Public fields
-///
-/// * `x_start` - Starting X coordinate of the mob
-/// * `y_start` - Starting Y coordinate of the mob
-/// * `asset` - Asset identifier for the mob's appearance
-/// * `is_player` - Indicates if this mob represents the player character
-/// * `behaviour` - Behaviour configuration for the mob
 #[derive(Deserialize, Debug, Clone)]
 pub struct JsonMob {
+    /// Starting X coordinate of the mob
     pub x_start: u32,
+    /// Starting Y coordinate of the mob
     pub y_start: u32,
+    /// Asset identifier for the mob's appearance
     pub asset: String,
 
+    /// Indicates if this mob represents the player character
     #[serde(default)]
     pub is_player: bool,
 
+    /// Behaviour configuration for the mob
     #[serde(default)]
     pub behaviour: Option<BehaviourJson>,
 }
 
 /// Object data from JSON.
-///
-/// # Public fields
-///
-/// * `x` - X coordinate of the object
-/// * `y` - Y coordinate of the object
-/// * `asset` - Asset identifier for the object's appearance
-/// * `collidable` - Indicates if the object can be collided with
-/// * `shadow` - Indicates if the object casts a shadow
 #[derive(Deserialize, Debug, Clone)]
 pub struct JsonObject {
+    /// X coordinate of the object
     pub x: u32,
+    /// Y coordinate of the object
     pub y: u32,
+    /// Asset identifier for the object's appearance
     pub asset: String,
 
+    /// Indicates if the object can be collided with
     #[serde(default)]
     pub collidable: bool,
 
+    /// Indicates if the object casts a shadow
     #[serde(default)]
     pub shadow: bool,
 }
 
 /// Tile data from JSON.
-///
-/// # Public fields
-///
-/// * `x` - X coordinate of the tile
-/// * `y` - Y coordinate of the tile
-/// * `asset` - Asset identifier for the tile's appearance
 #[derive(Deserialize, Debug, Clone)]
 pub struct JsonTile {
+    /// X coordinate of the tile
     pub x: u32,
+    /// Y coordinate of the tile
     pub y: u32,
+    /// Asset identifier for the tile's appearance
     pub asset: String,
 }
 
 /// Meta information about the game map from JSON.
-///
-/// # Public fields
-///
-/// * `name` - Name of the map
-/// * `tile_size` - Tile size in pixels
-/// * `size` - Map dimensions [width, height]
 #[derive(Deserialize, Debug, Clone)]
 pub struct Meta {
+    /// Name of the map
     pub name: String,
 
+    /// Tile size in pixels
     #[serde(default)]
     pub tile_size: u32,
 
+    /// Map dimensions [width, height]
     #[serde(default)]
     pub size: [u32; 2],
 }
 
 /// Complete map structure from JSON.
-///
-/// # Public fields
-///
-/// * `mobs` - Mapping of mobs' names to their definitions
-/// * `objects` - Mapping of objects' names to their definitions
-/// * `tiles` - Mapping of tiles' names to their definitions
-/// * `meta` - Map meta information
 #[derive(Deserialize, Debug, Clone)]
 pub struct JsonMap {
+    /// Mapping of mobs' names to their definitions
     pub mobs: HashMap<String, JsonMob>,
+    /// Mapping of objects' names to their definitions
     pub objects: HashMap<String, JsonObject>,
+    /// Mapping of tiles' names to their definitions
     pub tiles: HashMap<String, JsonTile>,
+    /// Map meta information
     pub meta: Meta,
 }
 
@@ -136,92 +118,77 @@ pub enum BehaviourType {
 }
 
 /// Processed behaviour data for game logic.
-///
-/// # Public fields
-///
-/// * `behaviour_type` - Type of behaviour
-/// * `direction` - Direction for the behaviour
-/// * `speed` - Speed value for the behaviour
 #[derive(Debug, Clone)]
 pub struct Behaviour {
+    /// Type of behaviour
     pub behaviour_type: BehaviourType,
+    /// Direction for the behaviour
     pub direction: Option<String>,
+    /// Speed value for the behaviour
     pub speed: Option<f32>,
 }
 
 /// Mob in the game world.
-///
-/// # Public fields
-///
-/// * `name` - Unique identifier for the mob
-/// * `x_start` - Starting X coordinate of the mob
-/// * `y_start` - Starting Y coordinate of the mob
-/// * `asset` - Asset identifier for the mob's appearance
-/// * `is_player` - Indicates if this mob represents the player character
-/// * `behaviour` - Behaviour configuration for the mob
 #[derive(Debug, Clone)]
 pub struct Mob {
+    /// Unique identifier for the mob
     pub name: String,
+    /// Starting X coordinate of the mob
     pub x_start: u32,
+    /// Starting Y coordinate of the mob
     pub y_start: u32,
+    /// Asset identifier for the mob's appearance
     pub asset: String,
+    /// Indicates if this mob represents the player character
     pub is_player: bool,
+    /// Behaviour configuration for the mob
     pub behaviour: Option<Behaviour>,
 }
 
 /// Static object in the game world.
-///
-/// # Public fields
-///
-/// * `name` - Unique identifier for the object
-/// * `x` - X coordinate of the object
-/// * `y` - Y coordinate of the object
-/// * `asset` - Asset identifier for the object's appearance
-/// * `collidable` - Indicates if the object can be collided with
-/// * `shadow` - Indicates if the object casts a shadow
 #[derive(Debug, Clone)]
 pub struct Object {
+    /// Unique identifier for the object
     pub name: String,
+    /// X coordinate of the object
     pub x: u32,
+    /// Y coordinate of the object
     pub y: u32,
+    /// Asset identifier for the object's appearance
     pub asset: String,
+    /// Indicates if the object can be collided with
     pub collidable: bool,
+    /// Indicates if the object casts a shadow
     pub shadow: bool,
 }
 
 /// Tile in the game world.
-///
-/// # Public fields
-///
-/// * `name` - Unique identifier for the tile
-/// * `x` - X coordinate of the tile
-/// * `y` - Y coordinate of the tile
-/// * `asset` - Asset identifier for the tile's appearance
 #[derive(Debug, Clone)]
 pub struct Tile {
+    /// Unique identifier for the tile
     pub name: String,
+    /// X coordinate of the tile
     pub x: u32,
+    /// Y coordinate of the tile
     pub y: u32,
+    /// Asset identifier for the tile's appearance
     pub asset: String,
 }
 
 /// Game map, as parsed and ready to use.
-///
-/// # Public fields
-///
-/// * `name` - Name of the map
-/// * `tile_size` - Tile size in pixels
-/// * `size` - Map dimensions [width, height]
-/// * `mobs` - Mapping of mobs' names to their definitions
-/// * `objects` - Mapping of objects' names to their definitions
-/// * `tiles` - Mapping of tiles' names to their definitions
 #[derive(Debug)]
 pub struct GameMap {
+    /// Name of the map
     pub name: String,
+    /// Tile size in pixels
     pub tile_size: u32,
+    /// Map dimensions [width, height]
     pub size: [u32; 2],
+    /// Mapping of mobs' names to their definitions
     pub mobs: HashMap<String, Mob>,
+    /// Mapping of objects' names to their definitions
     pub objects: HashMap<String, Object>,
+    /// Mapping of tiles' names to their definitions
     pub tiles: HashMap<String, Tile>,
 }
 
