@@ -1,6 +1,6 @@
 pub struct State {
-    player: Unit,
-    mobs: Vec<Unit>
+    pub player: Unit,
+    pub mobs: Vec<Unit>
 }
 
 pub struct Unit {

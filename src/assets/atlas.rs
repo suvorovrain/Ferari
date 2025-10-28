@@ -48,7 +48,15 @@ struct AtlasJson {
 // ============================
 
 /// Represents a single frame in the atlas.
-#[derive(Debug)]
+///
+/// # Public fields
+///
+/// * `name` - Name identifier of the frame
+/// * `x` - X coordinate of the frame in the atlas image
+/// * `y` - Y coordinate of the frame in the atlas image
+/// * `w` - Width of the frame in pixels
+/// * `h` - Height of the frame in pixels
+#[derive(Debug,Clone)]
 pub struct Frame {
     /// Name identifier of the frame
     pub name: String,
