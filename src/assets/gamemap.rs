@@ -176,7 +176,7 @@ pub struct Tile {
 }
 
 /// Game map, as parsed and ready to use.
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct GameMap {
     /// Name of the map
     pub name: String,
