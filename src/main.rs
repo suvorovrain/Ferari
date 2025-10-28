@@ -14,93 +14,95 @@ mod world;
 
 const LOGIC_WIDTH: usize = 200;
 const LOGIC_HEIGHT: usize = 200;
-const TILE_SIZE: usize = 16;
+
+// const TILE_SIZE: usize = 16;
+
 const UPSCALE: usize = 5;
 
 fn main() {
-    // load atlas
+    // parse atlases
     let tiles_atlas = assets::Atlas::load("assets/tiles/atlas.json").unwrap();
     let entity_atlas = assets::Atlas::load("assets/entities/atlas.json").unwrap();
 
-    // load game info
+    // parse game descr
     let game = assets::GameMap::load("input.json").unwrap();
 
-    // init buffer
+    // init draw
+    let input_state = Arc::new(input::InputState::new());
+    let running = Arc::new(AtomicBool::new(true));
+    let (tx_frame, rx_frame) = bounded::<Vec<u32>>(2);
+
+    // framebuffer (`render <-> draw` connection)
     let mut back_buffer: Vec<u32> = vec![0; LOGIC_WIDTH * LOGIC_HEIGHT];
 
-    // input shared state
-    let input_state = Arc::new(input::InputState::new());
-
-    // init running flag
-    let running = Arc::new(AtomicBool::new(true));
-
-    // channel for frames
-    let (tx_frame, rx_frame) = bounded::<Vec<u32>>(2);
-    let world_width = LOGIC_WIDTH * TILE_SIZE;
-    let world_height = LOGIC_HEIGHT * TILE_SIZE + TILE_SIZE;
-    // spawn draw thread
     {
         let input_state = input_state.clone();
         let running = running.clone();
+
         thread::spawn(move || {
             draw::run_draw_thread(
                 rx_frame,
                 input_state,
                 running,
-                world_width,
-                world_height,
+                LOGIC_WIDTH,
+                LOGIC_HEIGHT,
                 UPSCALE,
             );
         });
     }
 
-    let mut world_buf: Vec<u32> = vec![0; world_width * world_height];
-    let shadow_map: Vec<u8> = vec![0; world_width * world_height];
-    println!(
-        "world_width={}, world_height={}, buf_len={}",
-        world_width,
-        world_height,
-        world_buf.len()
-    );
+    // init world_buf
+    let world_width = LOGIC_WIDTH;
+    let world_height = LOGIC_HEIGHT;
 
+    let mut world_buf: Vec<u32> = vec![0; world_width * world_height];
+    // init render
+    let shadow_map: Vec<u8> = vec![0; world_width * world_height];
     let mut render =
         render::Render::new(world_buf, world_height, world_width, entity_atlas, shadow_map);
 
-    render.init(game, tiles_atlas);
-    
+    // init camera
+    let camera = world::Camera::new(
+        (LOGIC_WIDTH / 2) as f32,
+        (LOGIC_HEIGHT / 2) as f32,
+        LOGIC_WIDTH as u16,
+        LOGIC_HEIGHT as u16,
+    );
 
-    // init Time
+    // init time
     let mut time = time::Time::new();
+
     // prerender
-    // world_buf
+    render.init(game, tiles_atlas);
+    // game loop
     while running.load(Ordering::Acquire) {
         time.update();
 
-        let r = ((time.total).sin() * 127.0 + 128.0) as u32;
-        let g = ((time.total + 2.0).sin() * 127.0 + 128.0) as u32;
-        let b = ((time.total + 4.0).sin() * 127.0 + 128.0) as u32;
+        // test gradient
+        // let r = ((time.total).sin() * 127.0 + 128.0) as u32;
+        // let g = ((time.total + 2.0).sin() * 127.0 + 128.0) as u32;
+        // let b = ((time.total + 4.0).sin() * 127.0 + 128.0) as u32;
+        // let color = (r << 16) | (g << 8) | b;
 
-        let color = (r << 16) | (g << 8) | b;
+        // for px in back_buffer.iter_mut() {
+        //     *px = color;
+        // }
 
-        for px in back_buffer.iter_mut() {
-            *px = color;
+        // frame render
+        render.render_frame(&camera, &mut back_buffer);
+
+        // draw frame
+        if tx_frame.try_send(back_buffer.clone()).is_err() {
+            // draw thread busy — пропускаем кадр
         }
 
-        // send frame
-        if tx_frame.try_send(render.world_buf.clone()).is_err() {
-            // draw thread busy - skip
-        }
-
-        // read input state (from draw thread)
+        // process input
         let input = input_state.read();
-        // behaviour::move(&player)
-        // state
-        // if init
-        //      render
         if input.escape {
             running.store(false, Ordering::Release);
         }
 
+        // fps limit
         thread::sleep(Duration::from_millis(16)); // ~60 FPS
     }
 
