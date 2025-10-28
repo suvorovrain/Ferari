@@ -15,7 +15,7 @@ mod world;
 const LOGIC_WIDTH: usize = 200;
 const LOGIC_HEIGHT: usize = 200;
 
-// const TILE_SIZE: usize = 16;
+const TILE_SIZE: usize = 16;
 
 const UPSCALE: usize = 5;
 
@@ -52,8 +52,8 @@ fn main() {
     }
 
     // init world_buf
-    let world_width = LOGIC_WIDTH;
-    let world_height = LOGIC_HEIGHT;
+    let world_width = game.size[0] as usize * TILE_SIZE * 2;
+    let world_height = game.size[1] as usize * TILE_SIZE * 2;
 
     let mut world_buf: Vec<u32> = vec![0; world_width * world_height];
     // init render
@@ -62,9 +62,9 @@ fn main() {
         render::Render::new(world_buf, world_height, world_width, entity_atlas, shadow_map);
 
     // init camera
-    let camera = world::Camera::new(
-        (LOGIC_WIDTH / 2) as f32,
-        (LOGIC_HEIGHT / 2) as f32,
+    let mut camera = world::Camera::new(
+        (world_width / 2) as f32,
+        (world_height / 2) as f32,
         LOGIC_WIDTH as u16,
         LOGIC_HEIGHT as u16,
     );
@@ -101,6 +101,11 @@ fn main() {
         if input.escape {
             running.store(false, Ordering::Release);
         }
+
+        camera.center_x = camera.center_x + (if input.right { 0.5 } else { 0.0 });
+        camera.center_x = camera.center_x + (if input.left { -0.5 } else { 0.0 });
+        camera.center_y = camera.center_y + (if input.up { -0.5 } else { 0.0 });
+        camera.center_y = camera.center_y + (if input.down { 0.5 } else { 0.0 });
 
         // fps limit
         thread::sleep(Duration::from_millis(16)); // ~60 FPS
