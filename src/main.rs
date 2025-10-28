@@ -23,7 +23,7 @@ const LOGIC_HEIGHT: usize = 200;
 
 const TILE_SIZE: usize = 16;
 
-const UPSCALE: usize = 5;
+const UPSCALE: usize = 7;
 
 fn main() {
     // parse atlases
@@ -83,9 +83,10 @@ fn main() {
 
     // prerender
     render.init(&game, &tiles_atlas);
-    render.render_frame(&Vec::new(), &camera, &mut back_buffer);
+    render.render_frame(&Vec::new(), &camera, &mut back_buffer, &time);
     state.player.x = camera.center_x;
     state.player.y = camera.center_y;
+    println!("{} {}", state.player.x, state.player.y);
     // game loop
     while running.load(Ordering::Acquire) {
         time.update();
@@ -111,6 +112,8 @@ fn main() {
         camera.center_x = state.player.x;
         camera.center_y = state.player.y;
 
+        println!("{} {}", state.player.x, state.player.y);
+
         let units_for_render = get_visible_objects(&state, &camera);
 
         if units_for_render.len() == 0 {
@@ -118,7 +121,7 @@ fn main() {
         }
 
         // frame render
-        render.render_frame(&units_for_render, &camera, &mut back_buffer);
+        render.render_frame(&units_for_render, &camera, &mut back_buffer, &time);
 
         // draw frame
         if tx_frame.try_send(back_buffer.clone()).is_err() {
