@@ -82,7 +82,6 @@ fn main() {
     render.render_frame(&Vec::new(), &camera, &mut back_buffer, &time);
     state.player.x = camera.center_x;
     state.player.y = camera.center_y;
-    println!("{} {}", state.player.x, state.player.y);
     // game loop
     while running.load(Ordering::Acquire) {
         time.update();
@@ -107,8 +106,6 @@ fn main() {
 
         camera.center_x = state.player.x;
         camera.center_y = state.player.y;
-
-        println!("{} {}", state.player.x, state.player.y);
 
         let units_for_render = get_visible_objects(&state, &camera);
 
