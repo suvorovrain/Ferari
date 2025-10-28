@@ -5,7 +5,7 @@ use std::time::Duration;
 
 use crossbeam_channel::bounded;
 
-use crate::world::make_step;
+use crate::world::{get_visible_objects, make_step};
 
 mod assets;
 mod draw;
@@ -93,14 +93,6 @@ fn main() {
         //     *px = color;
         // }
 
-        // frame render
-        render.render_frame(&camera, &mut back_buffer);
-
-        // draw frame
-        if tx_frame.try_send(back_buffer.clone()).is_err() {
-            // draw thread busy — пропускаем кадр
-        }
-
         // process input
         let input = input_state.read();
         if input.escape {
@@ -108,6 +100,23 @@ fn main() {
         }
 
         make_step(&mut state, &input);
+
+        camera.center_x = state.player.x;
+        camera.center_y = state.player.y;
+
+        let units_for_render = get_visible_objects(&state, &camera);
+
+        if units_for_render.len() == 0 {
+            continue;
+        }
+
+        // frame render
+        render.render_frame(&camera, &mut back_buffer);
+
+        // draw frame
+        if tx_frame.try_send(back_buffer.clone()).is_err() {
+            // draw thread busy — пропускаем кадр
+        }
 
         // fps limit
         thread::sleep(Duration::from_millis(16)); // ~60 FPS
