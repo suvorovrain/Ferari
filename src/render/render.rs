@@ -67,7 +67,7 @@ impl Render {
     }
     pub fn render_frame(
         &mut self,
-        visible_things: &Vec<Unit>,
+        visible_things: &[Unit],
         camera: &Camera,
         buf: &mut [u32],
         time: &Time,
@@ -125,7 +125,7 @@ impl Render {
             let name_model = if i == 0 { "knight_0" } else { "imp_20" };
             let period = 0.4;
             let cycles = (time.total / period).floor() as u32;
-            let animation_num = if cycles % 2 == 0 { "_0" } else { "_1" };
+            let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
             let full_name = name_model.to_string() + animation_num;
             if let Some(frame) = self.entity_atlas.get_frame(&full_name) {
                 let fw = frame.w as i32;
