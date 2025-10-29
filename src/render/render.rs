@@ -2,15 +2,36 @@ use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
 use crate::time::Time;
 use crate::world::{Camera, Unit};
 
+/// The `Render` struct handles isometric projection rendering with shadow mapping
+/// and dynamic entity animation. It maintains world buffers and uses atlas for
+/// sprite rendering.
 pub struct Render {
+    /// Atlas containing entity sprites
     pub entity_atlas: Atlas,
+    /// Height of the world buffer in pixels
     pub world_height: usize,
+    /// Width of the world buffer in pixels
     pub world_width: usize,
+    /// Primary world pixel buffer storing rendered entities
     pub world_buf: Vec<u32>,
+    /// Shadow intensity map for shadow calculations
     pub shadow_map: Vec<u8>,
 }
 
 impl Render {
+    /// Creates a new Render instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `world_buf` - Pre-allocated pixel buffer for world rendering
+    /// * `height` - Height of the world viewport
+    /// * `width` - Width of the world viewport  
+    /// * `entity_atlas` - Sprite atlas for entities
+    /// * `shadow` - Pre-allocated shadow intensity map
+    ///
+    /// # Returns
+    ///
+    /// A new `Render` instance with all values initialized to specified arguments.
     pub fn new(
         world_buf: Vec<u32>,
         height: usize,
@@ -27,6 +48,15 @@ impl Render {
         }
     }
 
+    /// Initializes the world buffer by rendering static map elements
+    ///
+    /// Renders tiles and objects from the game map building isometric projection.
+    /// Sorts elements by their (x+y) coordinate for depth ordering.
+    ///
+    /// # Arguments
+    ///
+    /// * `game` - The game map containing tiles and objects
+    /// * `static_atlas` - Sprite atlas for static map elements
     pub fn init(&mut self, game: &GameMap, static_atlas: &Atlas) {
         let mut tiles: Vec<Tile> = (*game).clone().tiles.into_values().collect();
         tiles.sort_by(|a, b| (a.x + a.y).cmp(&(b.x + b.y)));
@@ -43,7 +73,7 @@ impl Render {
                 let screen_x = (tile.x as i32 - tile.y as i32) * (fw / 2) + offset_x;
                 let screen_y = (tile.x as i32 + tile.y as i32) * (fh / 4) + offset_y - (fh / 2);
 
-                self.render_title(frame, screen_x, screen_y, static_atlas);
+                self.render_tile(frame, screen_x, screen_y, static_atlas);
             }
         }
 
@@ -65,6 +95,18 @@ impl Render {
             }
         }
     }
+
+    /// Renders a complete frame
+    ///
+    /// Combines the pre-rendered world buffer with dynamic entities,
+    /// applying camera transformation and time-based animations.
+    ///
+    /// # Arguments
+    ///
+    /// * `visible_things` - List of units visible in the current frame
+    /// * `camera` - Camera configuration defining viewport and position
+    /// * `buf` - Output pixel buffer to render into
+    /// * `time` - Current time for animation timing
     pub fn render_frame(
         &mut self,
         visible_things: &[Unit],
@@ -141,6 +183,15 @@ impl Render {
         }
     }
 
+    /// Renders a unit to the world buffer
+    ///
+    /// # Arguments
+    ///
+    /// * `frame` - Sprite frame to render from the entity atlas
+    /// * `screen_x` - X position in screen coordinates (output buffer space)
+    /// * `screen_y` - Y position in screen coordinates (output buffer space)  
+    /// * `buf` - Output pixel buffer to render into
+    /// * `camera` - Camera configuration defining viewport and position
     fn render_unit(
         &self,
         frame: &Frame,
@@ -202,7 +253,15 @@ impl Render {
         }
     }
 
-    fn render_title(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
+    /// Renders a tile to the world buffer
+    ///
+    /// # Arguments
+    ///
+    /// * `frame` - Sprite frame to render from the entity atlas
+    /// * `screen_x` - X position in screen coordinates (output buffer space)
+    /// * `screen_y` - Y position in screen coordinates (output buffer space)  
+    /// * `atlas` - Sprite atlas for map elements
+    fn render_tile(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
         let (atlas_w, atlas_h) = atlas.image.dimensions();
 
         for dy in 0..frame.h as i32 {
@@ -237,6 +296,15 @@ impl Render {
             }
         }
     }
+
+    /// Renders a static object to the world buffer
+    ///
+    /// # Arguments
+    ///
+    /// * `frame` - Sprite frame to render from the entity atlas
+    /// * `screen_x` - X position in screen coordinates (output buffer space)
+    /// * `screen_y` - Y position in screen coordinates (output buffer space)  
+    /// * `atlas` - Sprite atlas for map elements
     fn render_object(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
         let (atlas_w, atlas_h) = atlas.image.dimensions();
 
@@ -272,6 +340,15 @@ impl Render {
             }
         }
     }
+
+    /// Renders shadow for a static object
+    ///
+    /// # Arguments
+    ///
+    /// * `frame` - Sprite frame to render from the entity atlas
+    /// * `screen_x` - X position in screen coordinates (output buffer space)
+    /// * `screen_y` - Y position in screen coordinates (output buffer space)  
+    /// * `atlas` - Sprite atlas for map elements
     fn render_shadow(&mut self, frame: &Frame, screen_x: i32, screen_y: i32, atlas: &Atlas) {
         let (atlas_w, atlas_h) = atlas.image.dimensions();
 
@@ -318,6 +395,16 @@ impl Render {
             }
         }
     }
+
+    /// Renders shadow for a dynamic unit
+    ///
+    /// # Arguments
+    ///
+    /// * `frame` - Sprite frame to render from the entity atlas
+    /// * `screen_x` - X position in screen coordinates (output buffer space)
+    /// * `screen_y` - Y position in screen coordinates (output buffer space)  
+    /// * `buf` - Output pixel buffer to render into
+    /// * `camera` - Camera configuration defining viewport and position
     fn render_shadow_unit(
         &self,
         frame: &Frame,
