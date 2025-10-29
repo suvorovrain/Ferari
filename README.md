@@ -10,6 +10,7 @@ An isometric engine that allows you to create simple games with static objects a
 * Vyacheslav Kochergin. [GitHub](https://github.com/VyacheslavIurevich), [Contact](https://t.me/se4life).
 * Dmitri Kuznetsov. [GitHub](https://github.com/f1i3g3), [Contact](https://t.me/f1i3g3).
 ## Dependencies
+Currently, only x86_64 Linux platform is supported.
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 sudo apt install cargo
@@ -25,6 +26,7 @@ rustup component add clippy
 cargo install cargo-tarpaulin
 ```
 ## Development
+* See [CONTRIBUTING.md](./CONTRIBUTING.md)
 * View docs via `cargo doc` (use  --document-private-items if you want)
 * Format your code via `cargo fmt`
 * Everything else - in CI
