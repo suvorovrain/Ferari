@@ -120,3 +120,174 @@ impl State {
         Self { player: player.unwrap(), mobs }
     }
 }
+
+#[cfg(test)]
+mod state_tests {
+    use crate::assets::{Behaviour, BehaviourType, GameMap, Mob};
+    use crate::world::State;
+
+    fn make_test_map() -> GameMap {
+        let mut mobs = std::collections::HashMap::new();
+
+        mobs.insert(
+            "player".to_string(),
+            Mob {
+                name: "player".to_string(),
+                x_start: 0,
+                y_start: 0,
+                asset: "knight".to_string(),
+                is_player: true,
+                behaviour: None,
+            },
+        );
+
+        mobs.insert(
+            "mob_right".to_string(),
+            Mob {
+                name: "mob_right".to_string(),
+                x_start: 10,
+                y_start: 0,
+                asset: "imp".to_string(),
+                is_player: false,
+                behaviour: Some(Behaviour {
+                    behaviour_type: BehaviourType::Walker,
+                    direction: Some("right".to_string()),
+                    speed: Some(1.0),
+                }),
+            },
+        );
+
+        mobs.insert(
+            "mob_up".to_string(),
+            Mob {
+                name: "mob_up".to_string(),
+                x_start: 0,
+                y_start: 10,
+                asset: "ghost".to_string(),
+                is_player: false,
+                behaviour: Some(Behaviour {
+                    behaviour_type: BehaviourType::Walker,
+                    direction: Some("up".to_string()),
+                    speed: Some(0.5),
+                }),
+            },
+        );
+
+        GameMap {
+            name: "test_map".to_string(),
+            tile_size: 16,
+            size: [5, 5],
+            mobs,
+            objects: std::collections::HashMap::new(),
+            tiles: std::collections::HashMap::new(),
+        }
+    }
+
+    #[test]
+    fn test_state_new_creates_player_and_mobs() {
+        let map = make_test_map();
+        let state = State::new(&map);
+
+        assert_eq!(state.player.x, 0.0);
+        assert_eq!(state.player.y, 0.0);
+        assert_eq!(state.player.x_speed, 10.0);
+        assert_eq!(state.player.y_speed, 10.0);
+
+        assert_eq!(state.mobs.len(), 2);
+
+        let mob_right = state.mobs.iter().find(|m| m.x_speed > 0.0).unwrap();
+        assert_eq!(mob_right.x_speed, 1.0);
+        assert_eq!(mob_right.y_speed, 0.0);
+        assert_eq!(mob_right.x, 10.0);
+        assert_eq!(mob_right.y, 0.0);
+
+        let mob_up = state.mobs.iter().find(|m| m.y_speed < 0.0).unwrap();
+        assert_eq!(mob_up.x_speed, 0.0);
+        assert_eq!(mob_up.y_speed, -0.5);
+        assert_eq!(mob_up.x, 0.0);
+        assert_eq!(mob_up.y, 10.0);
+    }
+
+    #[test]
+    fn test_state_with_no_mobs_other_than_player() {
+        let mut map = make_test_map();
+        map.mobs.retain(|_, mob| mob.is_player);
+        let state = State::new(&map);
+
+        assert_eq!(state.player.x, 0.0);
+        assert_eq!(state.player.y, 0.0);
+        assert!(state.mobs.is_empty());
+    }
+
+    #[test]
+    fn test_mob_with_unknown_or_none_behaviour_defaults_to_zero_speed() {
+        let mut mobs = std::collections::HashMap::new();
+        mobs.insert(
+            "player".to_string(),
+            Mob {
+                name: "player".to_string(),
+                x_start: 0,
+                y_start: 0,
+                asset: "knight".to_string(),
+                is_player: true,
+                behaviour: None,
+            },
+        );
+        mobs.insert(
+            "mob_none".to_string(),
+            Mob {
+                name: "mob_none".to_string(),
+                x_start: 5,
+                y_start: 5,
+                asset: "dummy".to_string(),
+                is_player: false,
+                behaviour: None,
+            },
+        );
+        mobs.insert(
+            "mob_unknown".to_string(),
+            Mob {
+                name: "mob_unknown".to_string(),
+                x_start: 10,
+                y_start: 10,
+                asset: "dummy".to_string(),
+                is_player: false,
+                behaviour: Some(Behaviour {
+                    behaviour_type: BehaviourType::Unknown,
+                    direction: Some("left".to_string()),
+                    speed: Some(2.0),
+                }),
+            },
+        );
+
+        let map = GameMap {
+            name: "test_map".to_string(),
+            tile_size: 16,
+            size: [5, 5],
+            mobs,
+            objects: std::collections::HashMap::new(),
+            tiles: std::collections::HashMap::new(),
+        };
+
+        let state = State::new(&map);
+        assert_eq!(state.mobs.len(), 2);
+
+        let mob_none = state.mobs.iter().find(|m| m.x == 5.0).unwrap();
+        assert_eq!(mob_none.x_speed, 0.0);
+        assert_eq!(mob_none.y_speed, 0.0);
+
+        let mob_unknown = state.mobs.iter().find(|m| m.x == 10.0).unwrap();
+        assert_eq!(mob_unknown.x_speed, -2.0);
+        assert_eq!(mob_unknown.y_speed, 0.0);
+    }
+
+    #[test]
+    fn test_player_position_does_not_change_from_map() {
+        let map = make_test_map();
+        let state = State::new(&map);
+
+        let player_map = map.get_mob("player").unwrap();
+        assert_eq!(state.player.x, player_map.x_start as f32);
+        assert_eq!(state.player.y, player_map.y_start as f32);
+    }
+}
