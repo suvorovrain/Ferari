@@ -29,7 +29,7 @@ fn main() {
     let entity_atlas = assets::Atlas::load("assets/entities/atlas.json").unwrap();
 
     // parse game descr
-    let game = assets::GameMap::load("input.json").unwrap();
+    let game = assets::GameMap::load("examples/input.json").unwrap();
 
     // init draw
     let input_state = Arc::new(input::InputState::new());
