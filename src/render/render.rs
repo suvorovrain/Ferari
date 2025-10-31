@@ -455,3 +455,50 @@ impl Render {
         }
     }
 }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use image::{Rgba, RgbaImage};
+    use std::collections::HashMap;
+
+    fn dummy_atlas(color: [u8; 4]) -> Atlas {
+        let mut img = RgbaImage::new(4, 4);
+        for y in 0..4 {
+            for x in 0..4 {
+                img.put_pixel(x, y, Rgba(color));
+            }
+        }
+
+        let mut frames = HashMap::new();
+        frames.insert("dummy".into(), Frame { name: String::new(), x: 0, y: 0, w: 4, h: 4 });
+
+        Atlas { image: img, frames, tile_size: 4, version: 1 }
+    }
+
+    fn dummy_camera() -> Camera {
+        Camera { center_x: 5.0, center_y: 5.0, width: 10, height: 10 }
+    }
+
+    #[test]
+    fn test_render_unit_changes_buffer() {
+        let atlas = dummy_atlas([255, 0, 0, 255]);
+        let mut buf = vec![0; 100];
+        let frame = atlas.get_frame("dummy").unwrap();
+        let cam = dummy_camera();
+
+        let render = Render::new(vec![0; 100], 10, 10, atlas.clone(), vec![0; 100]);
+        render.render_unit(frame, 3, 3, &mut buf, &cam);
+
+        assert!(buf.iter().any(|&p| p != 0), "Buffer must have changed pixels");
+    }
+
+    #[test]
+    fn test_render_shadow_modifies_shadow_map() {
+        let atlas = dummy_atlas([255, 255, 255, 255]);
+        let mut render = Render::new(vec![0; 100], 10, 10, atlas.clone(), vec![0; 100]);
+        let frame = atlas.get_frame("dummy").unwrap();
+
+        render.render_shadow(frame, 2, 2, &atlas);
+        assert!(render.shadow_map.iter().any(|&v| v > 0), "Shadow map must change");
+    }
+}

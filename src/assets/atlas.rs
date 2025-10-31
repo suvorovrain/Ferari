@@ -65,7 +65,7 @@ pub struct Frame {
 
 /// Complete atlas containing the image and frame definitions.
 #[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Atlas {
     /// The loaded RGBA image data of the atlas
     pub image: RgbaImage,
