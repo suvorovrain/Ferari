@@ -418,7 +418,7 @@ mod tests {
     // Test game map parsing on example
     #[test]
     fn test_load_game_map() {
-        let game_map = GameMap::load("input.json").unwrap();
+        let game_map = GameMap::load("examples/input.json").unwrap();
 
         assert_eq!(game_map.name, "demo_map");
         assert_eq!(game_map.tile_size, 16);
