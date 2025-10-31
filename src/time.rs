@@ -10,6 +10,8 @@ pub struct Time {
     pub total: f32,
     /// Delta calucalution
     last_instant: Instant,
+    /// FPS print
+    fps_timer: f32,
 }
 
 impl Time {
@@ -20,7 +22,7 @@ impl Time {
     /// A new `Time` instance with zero values of delta and total
     // and last_instant set to the current time.
     pub fn new() -> Self {
-        Self { delta: 0.0, total: 0.0, last_instant: Instant::now() }
+        Self { delta: 0.0, total: 0.0, last_instant: Instant::now(), fps_timer: 0.0 }
     }
 
     /// Updates time measurements.
@@ -32,6 +34,13 @@ impl Time {
         self.delta = now.duration_since(self.last_instant).as_secs_f32();
         self.total += self.delta;
         self.last_instant = now;
+        self.fps_timer += self.delta;
+
+        if self.fps_timer >= 1.0 {
+            let fps = 1.0 / self.delta.max(1e-6);
+            println!("FPS: {:.1}", fps);
+            self.fps_timer = 0.0;
+        }
     }
 }
 

@@ -67,7 +67,6 @@ pub fn make_step(curr_state: &mut State, input_state: &InputSnapshot) {
             mob.y = player.y + norm.1 * collision_distance;
             continue;
         }
-        println!("{}", abs_vector(vec_to));
         let norm = normalize_vector(vec_to);
         // length of vec_move is |speed|
         let mob_speed = (if mob.x_speed != 0. { mob.x_speed } else { mob.y_speed }).abs();
