@@ -76,3 +76,140 @@ pub fn make_step(curr_state: &mut State, input_state: &InputSnapshot) {
         mob.y += vec_move.1;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::State;
+    use crate::assets::GameMap;
+
+    use super::*;
+
+    #[test]
+    fn test_abs_vector_zero() {
+        assert_eq!(abs_vector((0.0, 0.0)), 0.0);
+    }
+
+    #[test]
+    fn test_abs_vector_nonzero() {
+        let len = abs_vector((3.0, 4.0));
+        assert!((len - 5.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn test_normalize_vector_basic() {
+        let n = normalize_vector((3.0, 4.0));
+        assert!(((n.0 * n.0 + n.1 * n.1).sqrt() - 1.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn test_normalize_vector_small_vector_returns_zero() {
+        let n = normalize_vector((0.01, 0.01));
+        assert_eq!(n, (0.0, 0.0));
+    }
+
+    fn make_test_state() -> State {
+        let game_map = GameMap::load("input.json").expect("failed to load game map for tests");
+
+        let mut state = State::new(&game_map);
+
+        state.player.x = 0.0;
+        state.player.y = 0.0;
+        state.player.x_speed = 0.0;
+        state.player.y_speed = 0.0;
+
+        if state.mobs.is_empty() {
+            state.mobs.push(crate::world::Unit {
+                x: 100.0,
+                y: 0.0,
+                x_speed: -0.5,
+                y_speed: 0.0,
+                ..Default::default()
+            });
+        }
+
+        state
+    }
+
+    #[test]
+    fn test_player_moves_right() {
+        let mut state = make_test_state();
+
+        let input = crate::input::InputSnapshot {
+            up: false,
+            down: false,
+            left: false,
+            right: true,
+            escape: false,
+        };
+
+        make_step(&mut state, &input);
+
+        assert!((state.player.x - 0.75).abs() < 1e-5);
+        assert!((state.player.y - 0.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn test_player_moves_up_left_diagonal() {
+        let mut state = make_test_state();
+
+        let input = crate::input::InputSnapshot {
+            up: true,
+            down: false,
+            left: true,
+            right: false,
+            escape: false,
+        };
+
+        make_step(&mut state, &input);
+
+        let dx = state.player.x;
+        let dy = state.player.y;
+        let len = (dx * dx + dy * dy).sqrt();
+        assert!((len - 0.75).abs() < 1e-5);
+        assert!(dx < 0.0 && dy < 0.0);
+    }
+
+    #[test]
+    fn test_mob_moves_toward_player() {
+        let mut state = make_test_state();
+        state.mobs[0].x = 50.0;
+        state.mobs[0].y = 0.0;
+        state.mobs[0].x_speed = -0.5;
+        state.mobs[0].y_speed = 0.0;
+
+        let input = crate::input::InputSnapshot {
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+            escape: false,
+        };
+
+        make_step(&mut state, &input);
+
+        assert!(state.mobs[0].x < 50.0);
+        assert!(state.mobs[0].y.abs() < 1e-3);
+    }
+
+    #[test]
+    fn test_collision_pushes_mob_back() {
+        let mut state = make_test_state();
+
+        state.mobs[0].x = 2.0;
+        state.mobs[0].y = 0.0;
+
+        let input = crate::input::InputSnapshot {
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+            escape: false,
+        };
+
+        make_step(&mut state, &input);
+
+        let vec_from = (state.mobs[0].x - state.player.x, state.mobs[0].y - state.player.y);
+        let dist = (vec_from.0 * vec_from.0 + vec_from.1 * vec_from.1).sqrt();
+        assert!((dist - 10.0).abs() < 1e-3);
+    }
+}
