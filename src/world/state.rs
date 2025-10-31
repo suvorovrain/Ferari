@@ -4,7 +4,7 @@ use crate::assets::GameMap;
 ///
 /// The `State` struct manages the player unit and all mob units in the game,
 /// tracking their positions and movement speeds for game simulation.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct State {
     /// The player-controlled unit
     pub player: Unit,
@@ -16,7 +16,7 @@ pub struct State {
 ///
 /// Units can be either player-controlled or game-controlled mobs. Each unit has
 /// a position in 2D space and speed components for movement simulation.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct Unit {
     /// X-coordinate position in the game world
     pub x: f32,
