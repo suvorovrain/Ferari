@@ -29,3 +29,17 @@ cargo install cargo-tarpaulin
 * View docs via `cargo doc` (use  --document-private-items if you want)
 * Format your code via `cargo fmt`
 * Everything else - in CI
+
+## Benchmark
+
+### Machine info:
+OS: Kubuntu 24.04
+CPU: Intel Core i7-12700H
+RAM: 16 GB
+| Mobs Count | Average FPS |
+|-------------|-------------|
+| 500         |    40       |
+| 5000         |       15      |
+| 10000        |      10       |
+| 100000        |      4       |
+| 1000000        |      0.7       |
