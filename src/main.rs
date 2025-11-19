@@ -88,7 +88,7 @@ fn main() {
     while running.load(Ordering::Acquire) {
         time.update();
 
-        // test gradient
+        // test gradient (TODO: move to tests?)
         // let r = ((time.total).sin() * 127.0 + 128.0) as u32;
         // let g = ((time.total + 2.0).sin() * 127.0 + 128.0) as u32;
         // let b = ((time.total + 4.0).sin() * 127.0 + 128.0) as u32;
