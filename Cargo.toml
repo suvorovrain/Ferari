@@ -1,6 +1,6 @@
 [package]
 name = "ferari"
-version = "0.1.0"
+version = "1.0.2"
 edition = "2021"
 description = "Fast Engine for Rendering Axonometric Rust-based Isometry"
 authors = ["Rodion Suvorov <rodion.suvorov.94@mail.ru>, Ilhom Kombaev <kombaev02@gmail.com>, Vyacheslav Kochergin <vyacheslav.kochergin1@gmail.com>, Dmitri Kuznetsov <dmitrvlkuznetsov@gmail.com>"]
