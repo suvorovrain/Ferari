@@ -39,12 +39,8 @@ pub fn run_draw_thread(
     height: usize,
     upscale: usize,
 ) {
-    let mut window = Window::new(
-        "Ferari",
-        width * upscale,
-        height * upscale, 
-        WindowOptions::default()
-    ).unwrap();
+    let mut window =
+        Window::new("Ferari", width * upscale, height * upscale, WindowOptions::default()).unwrap();
 
     window.set_target_fps(60);
 

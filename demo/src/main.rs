@@ -6,7 +6,7 @@ use std::time::Duration;
 
 use crossbeam_channel::bounded;
 
-use crate::behaviour::make_step; 
+use crate::behaviour::make_step;
 use crate::initiator::get_visible_objects;
 
 use ferari::assets;
@@ -16,7 +16,7 @@ use ferari::render;
 use ferari::time;
 use ferari::world;
 mod behaviour;
-mod initiator; 
+mod initiator;
 
 use ferari::render::RenderableEntity;
 
@@ -35,7 +35,6 @@ fn main() {
     let project_root = manifest_dir.join("..");
 
     let assets_path = project_root.join("assets");
-
 
     // parse atlases
     let tiles_path = assets_path.join("tiles/atlas.json");
@@ -109,16 +108,16 @@ fn main() {
     let visible_entities: Vec<RenderableEntity> = all_units
         .into_iter()
         .enumerate()
-         .map(|(i, unit)| {
-        let name_model = if i == 0 { "knight_0" } else { "imp_20" };
-        let period = 0.4;
-        let cycles = (time.total / period).floor() as u32;
-        let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
-        let full_name = name_model.to_string() + animation_num;
+        .map(|(i, unit)| {
+            let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+            let period = 0.4;
+            let cycles = (time.total / period).floor() as u32;
+            let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
+            let full_name = name_model.to_string() + animation_num;
 
-           RenderableEntity::new(unit.x, unit.y, full_name)
-    })
-    .collect();
+            RenderableEntity::new(unit.x, unit.y, full_name)
+        })
+        .collect();
 
     render.render_frame(&visible_entities, &camera, &mut back_buffer);
     state.player.x = camera.center_x;
@@ -156,18 +155,18 @@ fn main() {
 
         // frame render
         let visible_entities: Vec<RenderableEntity> = units_for_render
-        .into_iter()
-        .enumerate()
-         .map(|(i, unit)| {
-        let name_model = if i == 0 { "knight_0" } else { "imp_20" };
-        let period = 0.4;
-        let cycles = (time.total / period).floor() as u32;
-        let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
-        let full_name = name_model.to_string() + animation_num;
-        
-        RenderableEntity::new(unit.x, unit.y, full_name)
-    })
-    .collect();
+            .into_iter()
+            .enumerate()
+            .map(|(i, unit)| {
+                let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+                let period = 0.4;
+                let cycles = (time.total / period).floor() as u32;
+                let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
+                let full_name = name_model.to_string() + animation_num;
+
+                RenderableEntity::new(unit.x, unit.y, full_name)
+            })
+            .collect();
 
         render.render_frame(&visible_entities, &camera, &mut back_buffer);
 

@@ -1,5 +1,5 @@
 use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
-use crate::world::{Camera};
+use crate::world::Camera;
 
 /// Represents an entity that can be rendered
 #[derive(Clone)]
@@ -127,7 +127,7 @@ impl Render {
         &mut self,
         visible_entities: &[RenderableEntity],
         camera: &Camera,
-        buf: &mut [u32]
+        buf: &mut [u32],
     ) {
         // TODO: ADD STATE HANDLING
         let world_w = self.world_width as i32;
@@ -179,17 +179,17 @@ impl Render {
 
         // dynamic objects
         for entity in visible_entities {
-        if let Some(frame) = self.entity_atlas.get_frame(&entity.sprite_name) {
-            let fw = frame.w as i32;
-            let fh = frame.h as i32;
+            if let Some(frame) = self.entity_atlas.get_frame(&entity.sprite_name) {
+                let fw = frame.w as i32;
+                let fh = frame.h as i32;
 
-            let screen_x =
-                (entity.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
-            let screen_y =
-                (entity.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
-            
-            self.render_shadow_unit(frame, screen_x, screen_y, buf, camera);
-            self.render_unit(frame, screen_x, screen_y, buf, camera);
+                let screen_x =
+                    (entity.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
+                let screen_y =
+                    (entity.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
+
+                self.render_shadow_unit(frame, screen_x, screen_y, buf, camera);
+                self.render_unit(frame, screen_x, screen_y, buf, camera);
             }
         }
     }
