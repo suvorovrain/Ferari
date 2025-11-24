@@ -119,8 +119,6 @@ impl State {
 
         Self { player: player.unwrap(), mobs }
     }
-
-    
 }
 
 #[cfg(test)]

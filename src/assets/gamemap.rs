@@ -7,7 +7,6 @@ use std::path::Path;
 
 // TODO: delete mobs from json!
 
-
 // ============================
 // JSON-level structs
 // ============================
