@@ -1,6 +1,6 @@
 use crate::world::{Camera, Unit};
 
-use super::State;
+use ferari::world::State;
 
 /// Returns a list of game objects that are currently visible within the camera's view.
 ///

@@ -7,7 +7,7 @@ use std::time::Duration;
 use crossbeam_channel::bounded;
 
 use crate::behaviour::make_step; 
-use crate::world::{get_visible_objects};
+use crate::initiator::get_visible_objects;
 
 use ferari::assets;
 use ferari::draw;
@@ -15,7 +15,8 @@ use ferari::input;
 use ferari::render;
 use ferari::time;
 use ferari::world;
-mod behaviour; 
+mod behaviour;
+mod initiator; 
 
 use ferari::render::RenderableEntity;
 
