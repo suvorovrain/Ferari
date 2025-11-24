@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
@@ -7,12 +8,12 @@ use crossbeam_channel::bounded;
 
 use crate::world::{get_visible_objects, make_step};
 
-mod assets;
-mod draw;
-mod input;
-mod render;
-mod time;
-mod world;
+use ferari::assets;
+use ferari::draw;
+use ferari::input;
+use ferari::render;
+use ferari::time;
+use ferari::world;
 
 /// Logical screen width in pixels.
 const LOGIC_WIDTH: usize = 200;
@@ -24,12 +25,25 @@ const TILE_SIZE: usize = 16;
 const UPSCALE: usize = 5;
 
 fn main() {
+    // Need to find root directory
+    let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    let project_root = manifest_dir.join("..");
+
+    let assets_path = project_root.join("assets");
+
+
     // parse atlases
-    let tiles_atlas = assets::Atlas::load("assets/tiles/atlas.json").unwrap();
-    let entity_atlas = assets::Atlas::load("assets/entities/atlas.json").unwrap();
+    let tiles_path = assets_path.join("tiles/atlas.json");
+    let entities_path = assets_path.join("entities/atlas.json");
+
+    let tiles_atlas = assets::Atlas::load(tiles_path.to_str().unwrap()).unwrap();
+    let entities_atlas = assets::Atlas::load(entities_path.to_str().unwrap()).unwrap();
+
 
     // parse game descr
-    let game = assets::GameMap::load("examples/input.json").unwrap();
+    let game_path = project_root.join("examples/input.json");
+
+    let game = assets::GameMap::load(game_path).unwrap();
 
     // init draw
     let input_state = Arc::new(input::InputState::new());
@@ -63,7 +77,7 @@ fn main() {
     // init render
     let shadow_map: Vec<u8> = vec![0; world_width * world_height];
     let mut render =
-        render::Render::new(world_buf, world_height, world_width, entity_atlas, shadow_map);
+        render::Render::new(world_buf, world_height, world_width, entities_atlas, shadow_map);
 
     // init camera
     let mut camera = world::Camera::new(
