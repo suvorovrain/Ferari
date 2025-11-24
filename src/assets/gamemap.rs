@@ -5,6 +5,9 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
+// TODO: delete mobs from json!
+
+
 // ============================
 // JSON-level structs
 // ============================

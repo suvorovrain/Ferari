@@ -2,6 +2,8 @@ use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
 use crate::time::Time;
 use crate::world::{Camera, Unit};
 
+// TODO: delete dynamic mobs!
+
 /// The `Render` struct handles isometric projection rendering with shadow mapping
 /// and dynamic entity animation. It maintains world buffers and uses atlas for
 /// sprite rendering.

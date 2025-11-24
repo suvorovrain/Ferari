@@ -1,6 +1,6 @@
 use crate::input::InputSnapshot;
 
-use super::State;
+use ferari::world::State;
 
 /// Calculates the absolute value (length) of a 2D vector.
 ///
