@@ -162,9 +162,9 @@ impl Render {
             }
         }
 
-        // dynamic objects
+        // dynamic objects - TODO: remove
         for (i, unit) in visible_things.iter().enumerate() {
-            let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+            let name_model = if i == 0 { "knight_0" } else { "imp_20" };  // TODO: refactor 
             let period = 0.4;
             let cycles = (time.total / period).floor() as u32;
             let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };

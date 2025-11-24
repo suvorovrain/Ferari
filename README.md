@@ -25,7 +25,7 @@ cargo install cargo-tarpaulin
 ```
 ## Development
 * See [CONTRIBUTING.md](./CONTRIBUTING.md)
-* Compile & run via `cargo run`
+* Compile & run demo via `cargo run -p demo`
 * View docs via `cargo doc` (use  --document-private-items if you want)
 * Format your code via `cargo fmt`
 * Everything else - in CI
