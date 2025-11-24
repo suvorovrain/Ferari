@@ -1,8 +1,23 @@
 use crate::assets::{Atlas, Frame, GameMap, Object, Tile};
-use crate::time::Time;
-use crate::world::{Camera, Unit};
+use crate::world::{Camera};
 
-// TODO: delete dynamic mobs!
+/// Represents an entity that can be rendered
+#[derive(Clone)]
+pub struct RenderableEntity {
+    pub x: f32,
+    pub y: f32,
+    pub sprite_name: String,
+}
+
+impl RenderableEntity {
+    pub fn new(x: f32, y: f32, sprite_name: String) -> Self {
+        Self { x, y, sprite_name }
+    }
+
+    pub fn with_sprite(x: f32, y: f32, sprite_name: &str) -> Self {
+        Self::new(x, y, sprite_name.to_string())
+    }
+}
 
 /// The `Render` struct handles isometric projection rendering with shadow mapping
 /// and dynamic entity animation. It maintains world buffers and uses atlas for
@@ -108,13 +123,11 @@ impl Render {
     /// * `visible_things` - List of units visible in the current frame
     /// * `camera` - Camera configuration defining viewport and position
     /// * `buf` - Output pixel buffer to render into
-    /// * `time` - Current time for animation timing
     pub fn render_frame(
         &mut self,
-        visible_things: &[Unit],
+        visible_entities: &[RenderableEntity],
         camera: &Camera,
-        buf: &mut [u32],
-        time: &Time,
+        buf: &mut [u32]
     ) {
         // TODO: ADD STATE HANDLING
         let world_w = self.world_width as i32;
@@ -164,23 +177,19 @@ impl Render {
             }
         }
 
-        // dynamic objects - TODO: remove
-        for (i, unit) in visible_things.iter().enumerate() {
-            let name_model = if i == 0 { "knight_0" } else { "imp_20" };  // TODO: refactor 
-            let period = 0.4;
-            let cycles = (time.total / period).floor() as u32;
-            let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
-            let full_name = name_model.to_string() + animation_num;
-            if let Some(frame) = self.entity_atlas.get_frame(&full_name) {
-                let fw = frame.w as i32;
-                let fh = frame.h as i32;
+        // dynamic objects
+        for entity in visible_entities {
+        if let Some(frame) = self.entity_atlas.get_frame(&entity.sprite_name) {
+            let fw = frame.w as i32;
+            let fh = frame.h as i32;
 
-                let screen_x =
-                    (unit.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
-                let screen_y =
-                    (unit.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
-                self.render_shadow_unit(frame, screen_x, screen_y, buf, camera);
-                self.render_unit(frame, screen_x, screen_y, buf, camera);
+            let screen_x =
+                (entity.x as i32 - camera.center_x as i32) + camera.width as i32 / 2 - fw / 2;
+            let screen_y =
+                (entity.y as i32 - camera.center_y as i32) + camera.height as i32 / 2 - fh / 2;
+            
+            self.render_shadow_unit(frame, screen_x, screen_y, buf, camera);
+            self.render_unit(frame, screen_x, screen_y, buf, camera);
             }
         }
     }
@@ -455,6 +464,10 @@ impl Render {
                 buf[dest_idx] = (0xFF << 24) | ((r as u32) << 16) | ((g as u32) << 8) | (b as u32);
             }
         }
+    }
+
+    pub fn create_entity(&self, x: f32, y: f32, sprite_name: &str) -> RenderableEntity {
+        RenderableEntity::with_sprite(x, y, sprite_name)
     }
 }
 #[cfg(test)]

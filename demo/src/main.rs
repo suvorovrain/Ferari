@@ -17,6 +17,7 @@ use ferari::time;
 use ferari::world;
 mod behaviour; 
 
+use ferari::render::RenderableEntity;
 
 /// Logical screen width in pixels.
 const LOGIC_WIDTH: usize = 200;
@@ -41,7 +42,6 @@ fn main() {
 
     let tiles_atlas = assets::Atlas::load(tiles_path.to_str().unwrap()).unwrap();
     let entities_atlas = assets::Atlas::load(entities_path.to_str().unwrap()).unwrap();
-
 
     // parse game descr
     let game_path = project_root.join("examples/input.json");
@@ -98,7 +98,28 @@ fn main() {
 
     // prerender
     render.init(&game, &tiles_atlas);
-    render.render_frame(&Vec::new(), &camera, &mut back_buffer, &time);
+
+    let all_units = {
+        let mut units = vec![state.player.clone()];
+        units.extend(state.mobs.clone());
+        units
+    };
+
+    let visible_entities: Vec<RenderableEntity> = all_units
+        .into_iter()
+        .enumerate()
+         .map(|(i, unit)| {
+        let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+        let period = 0.4;
+        let cycles = (time.total / period).floor() as u32;
+        let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
+        let full_name = name_model.to_string() + animation_num;
+
+           RenderableEntity::new(unit.x, unit.y, full_name)
+    })
+    .collect();
+
+    render.render_frame(&visible_entities, &camera, &mut back_buffer);
     state.player.x = camera.center_x;
     state.player.y = camera.center_y;
     // game loop
@@ -133,7 +154,21 @@ fn main() {
         }
 
         // frame render
-        render.render_frame(&units_for_render, &camera, &mut back_buffer, &time);
+        let visible_entities: Vec<RenderableEntity> = units_for_render
+        .into_iter()
+        .enumerate()
+         .map(|(i, unit)| {
+        let name_model = if i == 0 { "knight_0" } else { "imp_20" };
+        let period = 0.4;
+        let cycles = (time.total / period).floor() as u32;
+        let animation_num = if cycles.is_multiple_of(2) { "_0" } else { "_1" };
+        let full_name = name_model.to_string() + animation_num;
+        
+        RenderableEntity::new(unit.x, unit.y, full_name)
+    })
+    .collect();
+
+        render.render_frame(&visible_entities, &camera, &mut back_buffer);
 
         // draw frame
         if tx_frame.try_send(back_buffer.clone()).is_err() {
