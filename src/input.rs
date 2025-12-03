@@ -116,6 +116,19 @@ mod tests {
         assert!(!snapshot.escape);
     }
 
+    /// Test that default InputState initializes with all keys set to false
+    #[test]
+    fn test_default_input_state_initializes_all_false() {
+        let input_state = InputState::default();
+        let snapshot = input_state.read();
+
+        assert!(!snapshot.up);
+        assert!(!snapshot.down);
+        assert!(!snapshot.left);
+        assert!(!snapshot.right);
+        assert!(!snapshot.escape);
+    }
+
     /// Test that InputState can be cloned and both instances share state
     #[test]
     fn test_input_state_clone_shares_state() {
