@@ -185,7 +185,11 @@ mod tests {
     // Test atlas JSON parsing on example
     #[test]
     fn test_load_entities_atlas() {
-        let atlas = Atlas::load("assets/tiles/atlas.json").unwrap();
+        let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let project_root = manifest_dir.join("..");
+        let atlas_path = project_root.join("assets/tiles/atlas.json");
+
+        let atlas = Atlas::load(atlas_path).unwrap();
 
         assert_eq!(atlas.tile_size, 16);
         assert_eq!(atlas.version, 1);

@@ -37,6 +37,17 @@ pub struct InputState {
     pub escape: Arc<AtomicBool>,
 }
 
+impl Default for InputState {
+    /// Creates a new `InputState` with all keys initially not pressed.
+    ///
+    /// # Returns
+    ///
+    /// A new `InputState` instance with all values initialized to `false`.
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl InputState {
     /// Creates a new `InputState` with all keys initially not pressed.
     ///

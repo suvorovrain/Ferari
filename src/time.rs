@@ -14,13 +14,25 @@ pub struct Time {
     fps_timer: f32,
 }
 
+impl Default for Time {
+    /// Creates a new Time instance with zero values and starts tracking.
+    ///
+    /// # Returns
+    ///
+    /// A new `Time` instance with zero values of delta and total
+    /// and last_instant set to the current time.
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Time {
     /// Creates a new Time instance with zero values and starts tracking.
     ///
     /// # Returns
     ///
     /// A new `Time` instance with zero values of delta and total
-    // and last_instant set to the current time.
+    /// and last_instant set to the current time.
     pub fn new() -> Self {
         Self { delta: 0.0, total: 0.0, last_instant: Instant::now(), fps_timer: 0.0 }
     }
@@ -56,6 +68,11 @@ mod tests {
         let time = Time::new();
         assert_eq!(time.delta, 0.0);
         assert_eq!(time.total, 0.0);
+
+        // Also test Default implementation
+        let time_default = Time::default();
+        assert_eq!(time_default.delta, 0.0);
+        assert_eq!(time_default.total, 0.0);
     }
 
     /// Test that update() method properly calculates delta time and updates total time
