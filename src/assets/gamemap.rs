@@ -416,11 +416,16 @@ impl Tile {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::PathBuf;
 
     // Test game map parsing on example
     #[test]
     fn test_load_game_map() {
-        let game_map = GameMap::load("input.json").unwrap();
+        let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let project_root = manifest_dir.join("..");
+        let map_path = project_root.join("examples/input.json");
+
+        let game_map = GameMap::load(map_path).unwrap();
 
         assert_eq!(game_map.name, "demo_map");
         assert_eq!(game_map.tile_size, 16);

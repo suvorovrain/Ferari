@@ -81,6 +81,7 @@ pub fn make_step(curr_state: &mut State, input_state: &InputSnapshot) {
 mod tests {
     use super::State;
     use crate::assets::GameMap;
+    use std::path::PathBuf;
 
     use super::*;
 
@@ -108,7 +109,11 @@ mod tests {
     }
 
     fn make_test_state() -> State {
-        let game_map = GameMap::load("input.json").expect("failed to load game map for tests");
+        let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+        let project_root = manifest_dir.join("..");
+
+        let map_path = project_root.join("examples/input.json");
+        let game_map = GameMap::load(map_path).expect("failed to load game map for tests");
 
         let mut state = State::new(&game_map);
 
